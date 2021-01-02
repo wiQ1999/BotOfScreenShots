@@ -31,8 +31,6 @@ namespace BotOfScreenShots_Application
             }
         }
 
-        public Profile MainProfile { get; set; }
-
         public MainForm()
         {
             InitializeComponent();
@@ -40,18 +38,30 @@ namespace BotOfScreenShots_Application
             EnableControls(true);
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)//dodać okno z pytaniem zapisania a nastepnie serializacja
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //
+            DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
 
-            _serializer.Serialize(_profilesList);
+            if (dialog == DialogResult.Yes)
+                _serializer.Serialize(_profilesList);
+            else if (dialog == DialogResult.Cancel)
+                e.Cancel = true;
         }
+
+        #region Serialization
 
         private void DeserializeData()
         {
             _profilesList = _serializer.Deserialize();
             UpdateProfilesList();
         }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            _serializer.Serialize(_profilesList);
+        }
+
+        #endregion
 
         private void EnableControls(bool isEnable)
         {
@@ -99,7 +109,6 @@ namespace BotOfScreenShots_Application
                 EnableControls(false);
                 ProfileAddButton.Enabled = false;
                 ProfileRemoveButton.Enabled = false;
-                Profile.IsToEdit = true;
                 _profilesListTempIndex = ProfilesList.SelectedIndex;
                 ProfilesList.DropDownStyle = ComboBoxStyle.Simple;
             }
@@ -114,5 +123,7 @@ namespace BotOfScreenShots_Application
                 ProfilesList.SelectedIndex = _profilesListTempIndex;
             }
         }
+
+        
     }
 }
