@@ -41,6 +41,7 @@ namespace BotOfScreenShots_Application
             this.CodeArea = new System.Windows.Forms.TextBox();
             this.BuildButton = new System.Windows.Forms.Button();
             this.DeveloperModeCheckBox = new System.Windows.Forms.CheckBox();
+            this.ProfileRemoveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,11 +69,12 @@ namespace BotOfScreenShots_Application
             this.ProfileAddButton.TabIndex = 4;
             this.ProfileAddButton.Text = "+";
             this.ProfileAddButton.UseVisualStyleBackColor = true;
+            this.ProfileAddButton.Click += new System.EventHandler(this.ProfileAddButton_Click);
             // 
             // ProfileChangeNameButton
             // 
             this.ProfileChangeNameButton.Enabled = false;
-            this.ProfileChangeNameButton.Location = new System.Drawing.Point(245, 12);
+            this.ProfileChangeNameButton.Location = new System.Drawing.Point(272, 12);
             this.ProfileChangeNameButton.Name = "ProfileChangeNameButton";
             this.ProfileChangeNameButton.Size = new System.Drawing.Size(21, 21);
             this.ProfileChangeNameButton.TabIndex = 5;
@@ -158,11 +160,21 @@ namespace BotOfScreenShots_Application
             this.DeveloperModeCheckBox.Text = "Developer mode";
             this.DeveloperModeCheckBox.UseVisualStyleBackColor = true;
             // 
+            // ProfileRemoveButton
+            // 
+            this.ProfileRemoveButton.Location = new System.Drawing.Point(245, 12);
+            this.ProfileRemoveButton.Name = "ProfileRemoveButton";
+            this.ProfileRemoveButton.Size = new System.Drawing.Size(21, 21);
+            this.ProfileRemoveButton.TabIndex = 14;
+            this.ProfileRemoveButton.Text = "-";
+            this.ProfileRemoveButton.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.ProfileRemoveButton);
             this.Controls.Add(this.DeveloperModeCheckBox);
             this.Controls.Add(this.BuildButton);
             this.Controls.Add(this.CodeArea);
@@ -198,6 +210,7 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.TextBox CodeArea;
         private System.Windows.Forms.Button BuildButton;
         private System.Windows.Forms.CheckBox DeveloperModeCheckBox;
+        private System.Windows.Forms.Button ProfileRemoveButton;
     }
 }
 

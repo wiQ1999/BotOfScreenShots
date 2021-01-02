@@ -7,17 +7,15 @@ namespace BotOfScreenShots_Algorithms
 {
     public abstract class ASearchImage
     {
-        public Rectangle _WorkArea;
+        private Bitmap _mainBitmap;
+        private Rectangle _workArea;
 
-        private Bitmap _MainBitmap;
-
-        public Rectangle WorkArea { get => _WorkArea; }
-
-        public Bitmap MainBitmap { get => _MainBitmap; private set => _MainBitmap = value; }
+        public Rectangle WorkArea { get => _workArea; }
+        public Bitmap MainBitmap { get => _mainBitmap; private set => _mainBitmap = value; }
 
         public ASearchImage(Rectangle WorkArea)
         {
-            _WorkArea = WorkArea;
+            _workArea = WorkArea;
             //_MainBitmap = TakeScreenShot(WorkArea);
         }
 
@@ -33,9 +31,9 @@ namespace BotOfScreenShots_Algorithms
 
         public virtual Point? Find(Bitmap searchBitmap)
         {
-            if (_WorkArea.Width < searchBitmap.Width || _WorkArea.Height < searchBitmap.Height)
+            if (_workArea.Width < searchBitmap.Width || _workArea.Height < searchBitmap.Height)
                 throw new Exception("Szukany element nie może być większy od obszaru wyszukiwania.");
-            _MainBitmap = TakeScreenShot(_WorkArea);
+            _mainBitmap = TakeScreenShot(_workArea);
             return null;
         }
 
@@ -43,9 +41,9 @@ namespace BotOfScreenShots_Algorithms
         {
             if (newMainBitmap.Width < searchBitmap.Width || newMainBitmap.Height < searchBitmap.Height)
                 throw new Exception("Szukany element nie może być większy od obszaru wyszukiwania.");
-            if (_WorkArea.Top > newMainBitmap.Top || _WorkArea.Bottom < newMainBitmap.Bottom || _WorkArea.Left > newMainBitmap.Left || _WorkArea.Right < newMainBitmap.Right)
+            if (_workArea.Top > newMainBitmap.Top || _workArea.Bottom < newMainBitmap.Bottom || _workArea.Left > newMainBitmap.Left || _workArea.Right < newMainBitmap.Right)
                 throw new Exception("Nowy obszar wyszuiwania nie znajduje się w obszarze roboczym.");
-            _MainBitmap = TakeScreenShot(newMainBitmap);
+            _mainBitmap = TakeScreenShot(newMainBitmap);
             return null;
         }
 
