@@ -20,6 +20,7 @@ namespace BotOfScreenShots_Application
         private readonly ISerializer _serializer = new XMLSerializer();
         private List<Profile> _profilesList;
         private int _profilesListTempIndex;
+        private Rectangle _workArea;
         
         public Profile Profile
         {
@@ -38,31 +39,6 @@ namespace BotOfScreenShots_Application
             EnableControls(true);
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
-
-            if (dialog == DialogResult.Yes)
-                _serializer.Serialize(_profilesList);
-            else if (dialog == DialogResult.Cancel)
-                e.Cancel = true;
-        }
-
-        #region Serialization
-
-        private void DeserializeData()
-        {
-            _profilesList = _serializer.Deserialize();
-            UpdateProfilesList();
-        }
-
-        private void SaveButton_Click(object sender, EventArgs e)
-        {
-            _serializer.Serialize(_profilesList);
-        }
-
-        #endregion
-
         private void EnableControls(bool isEnable)
         {
             FilesTreeView.Visible = isEnable;
@@ -75,6 +51,42 @@ namespace BotOfScreenShots_Application
             DeveloperModeCheckBox.Enabled = isEnable;
             CodeArea.Enabled = isEnable;
         }
+
+        #region Serialization
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
+
+            if (dialog == DialogResult.Yes)
+                Save();
+            else if (dialog == DialogResult.Cancel)
+                e.Cancel = true;
+        }
+
+        private void DeserializeData()
+        {
+            _profilesList = _serializer.Deserialize();
+            UpdateProfilesList();
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            Save();
+        }
+
+        private void Save()
+        {
+            Profile.Code = CodeArea.Lines;
+            Profile.WorkArea = _workArea;
+            Profile.IsPreview = PreviewCheckBox.Checked;
+            Profile.IsDeveloperMode = DeveloperModeCheckBox.Checked;
+            _serializer.Serialize(_profilesList);
+        }
+
+        #endregion
+
+        #region ProfilesList
 
         private void UpdateProfilesList()
         {
@@ -124,6 +136,28 @@ namespace BotOfScreenShots_Application
             }
         }
 
-        
+        private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //FilesList
+            PreviewCheckBox.Checked = Profile.IsPreview;
+            _workArea = Profile.WorkArea;
+            DeveloperModeCheckBox.Checked = Profile.IsDeveloperMode;
+            CodeArea.Lines = Profile.Code;
+        }
+
+        private void ProfileCheckSaved()
+        {
+            if (ProfilesList.SelectedIndex > -1 && !Profile.IsSaved)
+            {
+                DialogResult dialog = MessageBox.Show("Do you want to save changes before shift profile?", "Data not saved", MessageBoxButtons.YesNo);
+
+                if (dialog == DialogResult.Yes)
+                    Save();
+            }
+        }
+
+        #endregion
+
+        //muszę dodać zmianę właściwości IsSaved w profilu na false kiedy zmieniam workarea, zaznaczam checkboxy i kiedy piszę text w codearea
     }
 }

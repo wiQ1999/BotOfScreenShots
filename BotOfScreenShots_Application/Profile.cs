@@ -16,6 +16,7 @@ namespace BotOfScreenShots_Application
         private Rectangle _workArea;
         private bool _isPreview;
         private bool _isDeveloperMode;
+        private bool _isSaved;
 
         public string Name { get => _name; set => _name = value; }
         public string LocalPath { get => _localPath; set => _localPath = value; }
@@ -23,6 +24,8 @@ namespace BotOfScreenShots_Application
         public Rectangle WorkArea { get => _workArea; set => _workArea = value; }
         public bool IsPreview { get => _isPreview; set => _isPreview = value; }
         public bool IsDeveloperMode { get => _isDeveloperMode; set => _isDeveloperMode = value; }
+        [XmlIgnore]
+        public bool IsSaved { get => _isSaved; set => _isSaved = value; }
 
         public Profile() 
         {
@@ -36,6 +39,7 @@ namespace BotOfScreenShots_Application
             _workArea = Screen.PrimaryScreen.Bounds;
             _isPreview = true;
             _isDeveloperMode = false;
+            _isSaved = true;
         }
 
         public void ChangeName(string newName)

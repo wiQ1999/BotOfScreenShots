@@ -54,6 +54,7 @@ namespace BotOfScreenShots_Application
             this.ProfilesList.Name = "ProfilesList";
             this.ProfilesList.Size = new System.Drawing.Size(200, 21);
             this.ProfilesList.TabIndex = 2;
+            this.ProfilesList.SelectedIndexChanged += new System.EventHandler(this.ProfilesList_SelectedIndexChanged);
             // 
             // FilesTreeView
             // 
