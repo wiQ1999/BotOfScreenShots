@@ -32,7 +32,6 @@ namespace BotOfScreenShots_Application
             this.ProfilesList = new System.Windows.Forms.ComboBox();
             this.FilesTreeView = new System.Windows.Forms.TreeView();
             this.ProfileAddButton = new System.Windows.Forms.Button();
-            this.ProfileChangeNameButton = new System.Windows.Forms.Button();
             this.PreviewPictureBox = new System.Windows.Forms.PictureBox();
             this.WorkAreaButton = new System.Windows.Forms.Button();
             this.PreviewCheckBox = new System.Windows.Forms.CheckBox();
@@ -42,11 +41,14 @@ namespace BotOfScreenShots_Application
             this.BuildButton = new System.Windows.Forms.Button();
             this.DeveloperModeCheckBox = new System.Windows.Forms.CheckBox();
             this.ProfileRemoveButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.ProfileChangeNameButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // ProfilesList
             // 
+            this.ProfilesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ProfilesList.FormattingEnabled = true;
             this.ProfilesList.Location = new System.Drawing.Point(12, 12);
             this.ProfilesList.Name = "ProfilesList";
@@ -55,7 +57,7 @@ namespace BotOfScreenShots_Application
             // 
             // FilesTreeView
             // 
-            this.FilesTreeView.Location = new System.Drawing.Point(13, 40);
+            this.FilesTreeView.Location = new System.Drawing.Point(12, 41);
             this.FilesTreeView.Name = "FilesTreeView";
             this.FilesTreeView.Size = new System.Drawing.Size(253, 206);
             this.FilesTreeView.TabIndex = 3;
@@ -70,16 +72,6 @@ namespace BotOfScreenShots_Application
             this.ProfileAddButton.Text = "+";
             this.ProfileAddButton.UseVisualStyleBackColor = true;
             this.ProfileAddButton.Click += new System.EventHandler(this.ProfileAddButton_Click);
-            // 
-            // ProfileChangeNameButton
-            // 
-            this.ProfileChangeNameButton.Enabled = false;
-            this.ProfileChangeNameButton.Location = new System.Drawing.Point(272, 12);
-            this.ProfileChangeNameButton.Name = "ProfileChangeNameButton";
-            this.ProfileChangeNameButton.Size = new System.Drawing.Size(21, 21);
-            this.ProfileChangeNameButton.TabIndex = 5;
-            this.ProfileChangeNameButton.Text = "R";
-            this.ProfileChangeNameButton.UseVisualStyleBackColor = true;
             // 
             // PreviewPictureBox
             // 
@@ -168,12 +160,34 @@ namespace BotOfScreenShots_Application
             this.ProfileRemoveButton.TabIndex = 14;
             this.ProfileRemoveButton.Text = "-";
             this.ProfileRemoveButton.UseVisualStyleBackColor = true;
+            this.ProfileRemoveButton.Click += new System.EventHandler(this.ProfileRemoveButton_Click);
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(313, 11);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.TabIndex = 15;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            // 
+            // ProfileChangeNameButton
+            // 
+            this.ProfileChangeNameButton.Location = new System.Drawing.Point(272, 12);
+            this.ProfileChangeNameButton.Name = "ProfileChangeNameButton";
+            this.ProfileChangeNameButton.Size = new System.Drawing.Size(21, 21);
+            this.ProfileChangeNameButton.TabIndex = 16;
+            this.ProfileChangeNameButton.Text = "R";
+            this.ProfileChangeNameButton.UseVisualStyleBackColor = true;
+            this.ProfileChangeNameButton.Click += new System.EventHandler(this.ProfileChangeNameButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.ProfileChangeNameButton);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ProfileRemoveButton);
             this.Controls.Add(this.DeveloperModeCheckBox);
             this.Controls.Add(this.BuildButton);
@@ -183,13 +197,13 @@ namespace BotOfScreenShots_Application
             this.Controls.Add(this.PreviewCheckBox);
             this.Controls.Add(this.WorkAreaButton);
             this.Controls.Add(this.PreviewPictureBox);
-            this.Controls.Add(this.ProfileChangeNameButton);
             this.Controls.Add(this.ProfileAddButton);
             this.Controls.Add(this.FilesTreeView);
             this.Controls.Add(this.ProfilesList);
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "MainForm";
             this.Text = "BotOfScreenShots";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -201,7 +215,6 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.ComboBox ProfilesList;
         private System.Windows.Forms.TreeView FilesTreeView;
         private System.Windows.Forms.Button ProfileAddButton;
-        private System.Windows.Forms.Button ProfileChangeNameButton;
         private System.Windows.Forms.PictureBox PreviewPictureBox;
         private System.Windows.Forms.Button WorkAreaButton;
         private System.Windows.Forms.CheckBox PreviewCheckBox;
@@ -211,6 +224,8 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.Button BuildButton;
         private System.Windows.Forms.CheckBox DeveloperModeCheckBox;
         private System.Windows.Forms.Button ProfileRemoveButton;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button ProfileChangeNameButton;
     }
 }
 

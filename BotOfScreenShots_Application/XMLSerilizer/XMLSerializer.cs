@@ -1,5 +1,4 @@
 ﻿using BotOfScreenShots_Application.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
@@ -15,7 +14,7 @@ namespace BotOfScreenShots_Application.XMLSerilizer
             List<Profile> result;
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Profile>));
 
-            if (!File.Exists(PROFILESPATH) || new FileInfo("Profiles.xml").Length == 0)
+            if (!File.Exists(PROFILESPATH))
             {
                 File.Create(PROFILESPATH);
                 return new List<Profile>();
@@ -31,10 +30,10 @@ namespace BotOfScreenShots_Application.XMLSerilizer
 
         public void Serialize(List<Profile> list)
         {
-            if (list == null || list.Count < 1)
-            {
-                throw new ArgumentNullException("Empty list of profiles.");
-            }
+            //if (list == null || list.Count < 1)
+            //{
+            //    throw new ArgumentNullException("Empty list of profiles.");
+            //}
 
             XmlSerializer serializer = new XmlSerializer(typeof(List<Profile>));
 
