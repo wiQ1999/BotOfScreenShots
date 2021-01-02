@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotOfScreenShots_Application", "BotOfScreenShots_Application\BotOfScreenShots_Application.csproj", "{370F21AA-F312-43AE-B794-92655E1C402F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotOfScreenShots_Algorithms", "BotOfScreenShots_Algorithms\BotOfScreenShots_Algorithms.csproj", "{CFED090C-1826-4090-8E97-0FD9BB20B26B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{370F21AA-F312-43AE-B794-92655E1C402F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{370F21AA-F312-43AE-B794-92655E1C402F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{370F21AA-F312-43AE-B794-92655E1C402F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{370F21AA-F312-43AE-B794-92655E1C402F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFED090C-1826-4090-8E97-0FD9BB20B26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFED090C-1826-4090-8E97-0FD9BB20B26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFED090C-1826-4090-8E97-0FD9BB20B26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFED090C-1826-4090-8E97-0FD9BB20B26B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {936B571B-0190-481C-87BA-1ED6C9FF5E86}
+	EndGlobalSection
+EndGlobal
