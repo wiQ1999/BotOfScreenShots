@@ -4,24 +4,24 @@ using BotOfScreenShots_Application.Selector;
 using BotOfScreenShots_Application.XMLSerilizer;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BotOfScreenShots_Application
 {
     public partial class MainForm : Form
     {
+        #region Prop
+
+        private Thread _previewWorker;
+        private delegate void UpdatePreviewDelegate(Bitmap bitmap);
+
         private readonly ISerializer _serializer = new XMLSerializer();
         private List<Profile> _profilesList;
         private int _profilesListTempIndex;
-        private Rectangle _workArea;
+        private Rectangle _workArea = Rectangle.Empty;
         
         public Profile Profile
         {
@@ -33,9 +33,12 @@ namespace BotOfScreenShots_Application
             }
         }
 
+        #endregion
+
         public MainForm()
         {
             InitializeComponent();
+            CreatePreviewWorker();
             DeserializeData();
             EnableControls(true);
         }
@@ -51,6 +54,14 @@ namespace BotOfScreenShots_Application
             PlayButton.Enabled = isEnable;
             DeveloperModeCheckBox.Enabled = isEnable;
             CodeArea.Enabled = isEnable;
+        }
+
+        private void CreatePreviewWorker()
+        {
+            _previewWorker = new Thread(new ThreadStart(CaptureScreen))
+            {
+                IsBackground = true
+            };
         }
 
         #region Serialization
@@ -160,11 +171,75 @@ namespace BotOfScreenShots_Application
             _workArea = Profile.WorkArea;
             DeveloperModeCheckBox.Checked = Profile.IsDeveloperMode;
             CodeArea.Lines = Profile.Code;
+
+            InitializePreview();
         }
 
         private void ProfilesList_DropDown(object sender, EventArgs e)
         {
             Save();
+        }
+
+        #endregion
+
+        #region Preview
+
+        private void PreviewCheckBox_Click(object sender, EventArgs e)
+        {
+            Profile.InitiateSave();
+        }
+
+        private void PreviewCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            InitializePreview();
+        }
+
+        private void InitializePreview()
+        {
+            if (PreviewCheckBox.Checked && !_previewWorker.IsAlive)
+            {
+                _previewWorker.Start();
+            }
+            else if (PreviewCheckBox.Checked == false)
+            {
+                _previewWorker.Abort();
+                PreviewPictureBox.Image = null;
+                CreatePreviewWorker();
+            }
+            else
+            {
+                _previewWorker.Abort();
+                PreviewPictureBox.Image = null;
+                CreatePreviewWorker();
+                _previewWorker.Start();
+            }
+        }
+
+        private void UpdatePreview(Bitmap bitmap)
+        {
+            if (PreviewPictureBox.InvokeRequired)
+
+                PreviewPictureBox.Invoke(new UpdatePreviewDelegate(UpdatePreview), new object[] { bitmap });
+            else
+                PreviewPictureBox.Image = bitmap;
+        }
+
+        private void CaptureScreen()
+        {
+            float scale = Math.Min((float)PreviewPictureBox.Width / _workArea.Width, (float)PreviewPictureBox.Height / _workArea.Height);
+            using (Bitmap bitmap = new Bitmap(_workArea.Width, _workArea.Height, PixelFormat.Format32bppArgb))
+            {
+                while (true)
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.CopyFromScreen(Point.Empty, Point.Empty, _workArea.Size);
+                    }
+
+                    UpdatePreview(new Bitmap(bitmap, new Size((int)(bitmap.Width * scale), (int)(bitmap.Height * scale))));
+                    Thread.Sleep(100);
+                }
+            }
         }
 
         #endregion
@@ -179,19 +254,17 @@ namespace BotOfScreenShots_Application
             Profile.InitiateSave();
             SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
             selector.ShowDialog();
-            _workArea = selector.Area;
+            if (selector.Area != Rectangle.Empty)
+                _workArea = selector.Area;
             selector.Close();
-        }
-
-        private void PreviewCheckBox_Click(object sender, EventArgs e)
-        {
-            Profile.InitiateSave();
-
+            InitializePreview();
         }
 
         private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
         {
             Profile.InitiateSave();
         }
+
+        
     }
 }

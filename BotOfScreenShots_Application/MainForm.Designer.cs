@@ -104,6 +104,7 @@ namespace BotOfScreenShots_Application
             this.PreviewCheckBox.TabIndex = 8;
             this.PreviewCheckBox.Text = "Preview";
             this.PreviewCheckBox.UseVisualStyleBackColor = true;
+            this.PreviewCheckBox.CheckedChanged += new System.EventHandler(this.PreviewCheckBox_CheckedChanged);
             this.PreviewCheckBox.Click += new System.EventHandler(this.PreviewCheckBox_Click);
             // 
             // ScreenShotButton
