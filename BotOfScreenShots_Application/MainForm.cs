@@ -23,6 +23,9 @@ namespace BotOfScreenShots_Application
         private int _profilesListTempIndex;
         private Rectangle _workArea = Rectangle.Empty;
         
+        /// <summary>
+        /// Get current profile
+        /// </summary>
         public Profile Profile
         {
             get
@@ -43,6 +46,10 @@ namespace BotOfScreenShots_Application
             EnableControls(true);
         }
 
+        /// <summary>
+        /// changes the availability of controls on the MainForm
+        /// </summary>
+        /// <param name="isEnable">true or false</param>
         private void EnableControls(bool isEnable)
         {
             FilesTreeView.Visible = isEnable;
@@ -56,15 +63,43 @@ namespace BotOfScreenShots_Application
             CodeArea.Enabled = isEnable;
         }
 
+        /// <summary>
+        /// Overwrites thread responsible for showing preview
+        /// </summary>
         private void CreatePreviewWorker()
         {
-            _previewWorker = new Thread(new ThreadStart(CaptureScreen))
+            _previewWorker = new Thread(new ThreadStart(CaptureWorkArea))
             {
                 IsBackground = true
             };
         }
 
         #region Serialization
+
+        /// <summary>
+        /// Writes data from UI to current profile and serialize
+        /// </summary>
+        private void Save()
+        {
+            Profile.Save();
+            Profile.Code = CodeArea.Lines;
+            Profile.WorkArea = _workArea;
+            Profile.IsPreview = PreviewCheckBox.Checked;
+            Profile.IsDeveloperMode = DeveloperModeCheckBox.Checked;
+            _serializer.Serialize(_profilesList);
+        }
+
+        /// <summary>
+        /// Deserializes data from .xml file and selects profiles
+        /// </summary>
+        private void DeserializeData()
+        {
+            _profilesList = _serializer.Deserialize();
+            if (_profilesList.Count == 0)
+                AddProfile();
+            UpdateProfilesList();
+            SelectLastProfile();
+        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -79,45 +114,35 @@ namespace BotOfScreenShots_Application
             }
         }
 
-        private void DeserializeData()
-        {
-            _profilesList = _serializer.Deserialize();
-            if (_profilesList.Count == 0)
-                AddProfile();
-            UpdateProfilesList();
-            SelectLastProfile();
-        }
-
         private void SaveButton_Click(object sender, EventArgs e)
         {
             Save();
-        }
-
-        private void Save()
-        {
-            Profile.SaveProfile();
-            Profile.Code = CodeArea.Lines;
-            Profile.WorkArea = _workArea;
-            Profile.IsPreview = PreviewCheckBox.Checked;
-            Profile.IsDeveloperMode = DeveloperModeCheckBox.Checked;
-            _serializer.Serialize(_profilesList);
         }
 
         #endregion
 
         #region ProfilesList
 
+        /// <summary>
+        /// Clears and fill profiles list
+        /// </summary>
         private void UpdateProfilesList()
         {
             ProfilesList.Items.Clear();
             ProfilesList.Items.AddRange(_profilesList.ToArray());
         }
 
+        /// <summary>
+        /// Selects last profile on profiles list
+        /// </summary>
         private void SelectLastProfile()
         {
             ProfilesList.SelectedIndex = _profilesList.Count - 1;
         }
 
+        /// <summary>
+        /// Adds a profile to profile list and select it
+        /// </summary>
         private void AddProfile()
         {
             _profilesList.Add(new Profile("Profile" + Profile.ID));
@@ -160,7 +185,7 @@ namespace BotOfScreenShots_Application
                 ProfilesList.DropDownStyle = ComboBoxStyle.DropDownList;
                 UpdateProfilesList();
                 ProfilesList.SelectedIndex = _profilesListTempIndex;
-                Profile.InitiateSave();
+                Profile.InitializeSave();
             }
         }
 
@@ -184,16 +209,9 @@ namespace BotOfScreenShots_Application
 
         #region Preview
 
-        private void PreviewCheckBox_Click(object sender, EventArgs e)
-        {
-            Profile.InitiateSave();
-        }
-
-        private void PreviewCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            InitializePreview();
-        }
-
+        /// <summary>
+        /// Analyzes controls on UI and prepares to display or shut down a new thread
+        /// </summary>
         private void InitializePreview()
         {
             if (PreviewCheckBox.Checked && !_previewWorker.IsAlive)
@@ -215,6 +233,10 @@ namespace BotOfScreenShots_Application
             }
         }
 
+        /// <summary>
+        /// Invokes new image into picturebox on UI by delegate method
+        /// </summary>
+        /// <param name="bitmap">Bitmap image</param>
         private void UpdatePreview(Bitmap bitmap)
         {
             if (PreviewPictureBox.InvokeRequired)
@@ -224,7 +246,10 @@ namespace BotOfScreenShots_Application
                 PreviewPictureBox.Image = bitmap;
         }
 
-        private void CaptureScreen()
+        /// <summary>
+        /// Captures a work area and updates preview in the infinite loop
+        /// </summary>
+        private void CaptureWorkArea()
         {
             float scale = Math.Min((float)PreviewPictureBox.Width / _workArea.Width, (float)PreviewPictureBox.Height / _workArea.Height);
             using (Bitmap bitmap = new Bitmap(_workArea.Width, _workArea.Height, PixelFormat.Format32bppArgb))
@@ -242,16 +267,26 @@ namespace BotOfScreenShots_Application
             }
         }
 
+        private void PreviewCheckBox_Click(object sender, EventArgs e)
+        {
+            Profile.InitializeSave();
+        }
+
+        private void PreviewCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            InitializePreview();
+        }
+
         #endregion
 
         private void CodeArea_Enter(object sender, EventArgs e)
         {
-            Profile.InitiateSave();
+            Profile.InitializeSave();
         }
 
         private void WorkAreaButton_Click(object sender, EventArgs e)
         {
-            Profile.InitiateSave();
+            Profile.InitializeSave();
             SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
             selector.ShowDialog();
             if (selector.Area != Rectangle.Empty)
@@ -262,7 +297,7 @@ namespace BotOfScreenShots_Application
 
         private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
         {
-            Profile.InitiateSave();
+            Profile.InitializeSave();
         }
 
         

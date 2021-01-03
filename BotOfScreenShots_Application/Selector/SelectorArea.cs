@@ -7,6 +7,8 @@ namespace BotOfScreenShots_Application.Selector
 {
     public partial class SelectorArea : Form
     {
+        #region Prop
+
         [DllImport("User32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -27,6 +29,8 @@ namespace BotOfScreenShots_Application.Selector
         protected Rectangle BottomRightArea { get => new Rectangle(ClientSize.Width - DISTANCE, ClientSize.Height - DISTANCE, DISTANCE, DISTANCE); }
         public Rectangle Area { get; private set; }
 
+        #endregion
+
         public SelectorArea(Brush borderColor)
         {
             InitializeComponent();
@@ -34,6 +38,10 @@ namespace BotOfScreenShots_Application.Selector
             _color = borderColor;
         }
 
+        /// <summary>
+        /// Overridden method paints borders with chosen color
+        /// </summary>
+        /// <param name="e">Method event</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.FillRectangle(_color, new Rectangle(0, 0, ClientSize.Width, 10));
@@ -42,6 +50,10 @@ namespace BotOfScreenShots_Application.Selector
             e.Graphics.FillRectangle(_color, new Rectangle(0, ClientSize.Height - 10, ClientSize.Width, 10));
         }
 
+        /// <summary>
+        /// Establishes corners to resize area
+        /// </summary>
+        /// <param name="message">Message references</param>
         protected override void WndProc(ref Message message)
         {
             base.WndProc(ref message);
@@ -61,6 +73,9 @@ namespace BotOfScreenShots_Application.Selector
             }
         }
 
+        /// <summary>
+        /// Saves area rectangle to property and closes form
+        /// </summary>
         private void SaveArea()
         {
             Area = new Rectangle(Location, Size);

@@ -6,6 +6,8 @@ namespace BotOfScreenShots_Application
 {
     public class Profile
     {
+        #region Prop
+
         public static int ID;
 
         const string FILESPATH = @"./Files/";
@@ -27,6 +29,10 @@ namespace BotOfScreenShots_Application
         [XmlIgnore]
         public bool IsSaved { get => _isSaved; private set => _isSaved = value; }
 
+        #endregion
+
+        #region ctor
+
         public Profile() 
         {
             ID++;
@@ -42,19 +48,31 @@ namespace BotOfScreenShots_Application
             _isSaved = true;
         }
 
+        #endregion
+
+        /// <summary>
+        /// Change profile name and it folder path
+        /// </summary>
+        /// <param name="newName">New profile name</param>
         public void ChangeName(string newName)
         {
             //zmiana starego folderu na nową nazwę
             _name = newName;
         }
 
-        public void InitiateSave()
+        /// <summary>
+        /// Checks if save variable is turned true
+        /// </summary>
+        public void InitializeSave()
         {
             if (_isSaved)
                 _isSaved = false;
         }
 
-        public void SaveProfile()
+        /// <summary>
+        /// Marks profile to save
+        /// </summary>
+        public void Save()
         {
             _isSaved = true;
         }
