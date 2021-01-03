@@ -1,5 +1,6 @@
 ﻿using BotOfScreenShots_Algorithms;
 using BotOfScreenShots_Application.Interfaces;
+using BotOfScreenShots_Application.Selector;
 using BotOfScreenShots_Application.XMLSerilizer;
 using System;
 using System.Collections.Generic;
@@ -176,20 +177,21 @@ namespace BotOfScreenShots_Application
         private void WorkAreaButton_Click(object sender, EventArgs e)
         {
             Profile.InitiateSave();
+            SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
+            selector.ShowDialog();
+            _workArea = selector.Area;
+            selector.Close();
         }
 
         private void PreviewCheckBox_Click(object sender, EventArgs e)
         {
             Profile.InitiateSave();
+
         }
 
         private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
         {
             Profile.InitiateSave();
         }
-
-
-
-        //muszę dodać zmianę właściwości IsSaved w profilu na false kiedy zmieniam workarea, zaznaczam checkboxy i kiedy piszę text w codearea
     }
 }

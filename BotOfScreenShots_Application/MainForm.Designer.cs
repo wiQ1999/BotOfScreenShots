@@ -109,7 +109,7 @@ namespace BotOfScreenShots_Application
             // ScreenShotButton
             // 
             this.ScreenShotButton.Enabled = false;
-            this.ScreenShotButton.Location = new System.Drawing.Point(94, 250);
+            this.ScreenShotButton.Location = new System.Drawing.Point(94, 252);
             this.ScreenShotButton.Name = "ScreenShotButton";
             this.ScreenShotButton.Size = new System.Drawing.Size(75, 23);
             this.ScreenShotButton.TabIndex = 9;
@@ -128,11 +128,14 @@ namespace BotOfScreenShots_Application
             // 
             // CodeArea
             // 
+            this.CodeArea.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CodeArea.Enabled = false;
             this.CodeArea.Location = new System.Drawing.Point(272, 41);
             this.CodeArea.Multiline = true;
             this.CodeArea.Name = "CodeArea";
-            this.CodeArea.Size = new System.Drawing.Size(500, 416);
+            this.CodeArea.Size = new System.Drawing.Size(500, 508);
             this.CodeArea.TabIndex = 11;
             this.CodeArea.Enter += new System.EventHandler(this.CodeArea_Enter);
             // 
