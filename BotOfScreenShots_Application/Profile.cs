@@ -16,7 +16,7 @@ namespace BotOfScreenShots_Application
         private Rectangle _workArea;
         private bool _isPreview;
         private bool _isDeveloperMode;
-        private bool _isSaved;
+        private bool _isSaved = true;
 
         public string Name { get => _name; set => _name = value; }
         public string LocalPath { get => _localPath; set => _localPath = value; }
@@ -25,7 +25,7 @@ namespace BotOfScreenShots_Application
         public bool IsPreview { get => _isPreview; set => _isPreview = value; }
         public bool IsDeveloperMode { get => _isDeveloperMode; set => _isDeveloperMode = value; }
         [XmlIgnore]
-        public bool IsSaved { get => _isSaved; set => _isSaved = value; }
+        public bool IsSaved { get => _isSaved; private set => _isSaved = value; }
 
         public Profile() 
         {
@@ -46,6 +46,17 @@ namespace BotOfScreenShots_Application
         {
             //zmiana starego folderu na nową nazwę
             _name = newName;
+        }
+
+        public void InitiateSave()
+        {
+            if (_isSaved)
+                _isSaved = false;
+        }
+
+        public void SaveProfile()
+        {
+            _isSaved = true;
         }
 
         public override string ToString()

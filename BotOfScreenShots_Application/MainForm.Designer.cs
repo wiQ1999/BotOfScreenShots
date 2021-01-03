@@ -54,6 +54,7 @@ namespace BotOfScreenShots_Application
             this.ProfilesList.Name = "ProfilesList";
             this.ProfilesList.Size = new System.Drawing.Size(200, 21);
             this.ProfilesList.TabIndex = 2;
+            this.ProfilesList.DropDown += new System.EventHandler(this.ProfilesList_DropDown);
             this.ProfilesList.SelectedIndexChanged += new System.EventHandler(this.ProfilesList_SelectedIndexChanged);
             // 
             // FilesTreeView
@@ -91,6 +92,7 @@ namespace BotOfScreenShots_Application
             this.WorkAreaButton.TabIndex = 7;
             this.WorkAreaButton.Text = "Work area";
             this.WorkAreaButton.UseVisualStyleBackColor = true;
+            this.WorkAreaButton.Click += new System.EventHandler(this.WorkAreaButton_Click);
             // 
             // PreviewCheckBox
             // 
@@ -102,6 +104,7 @@ namespace BotOfScreenShots_Application
             this.PreviewCheckBox.TabIndex = 8;
             this.PreviewCheckBox.Text = "Preview";
             this.PreviewCheckBox.UseVisualStyleBackColor = true;
+            this.PreviewCheckBox.Click += new System.EventHandler(this.PreviewCheckBox_Click);
             // 
             // ScreenShotButton
             // 
@@ -131,6 +134,7 @@ namespace BotOfScreenShots_Application
             this.CodeArea.Name = "CodeArea";
             this.CodeArea.Size = new System.Drawing.Size(500, 416);
             this.CodeArea.TabIndex = 11;
+            this.CodeArea.Enter += new System.EventHandler(this.CodeArea_Enter);
             // 
             // BuildButton
             // 
@@ -152,6 +156,7 @@ namespace BotOfScreenShots_Application
             this.DeveloperModeCheckBox.TabIndex = 13;
             this.DeveloperModeCheckBox.Text = "Developer mode";
             this.DeveloperModeCheckBox.UseVisualStyleBackColor = true;
+            this.DeveloperModeCheckBox.Click += new System.EventHandler(this.DeveloperModeCheckBox_Click);
             // 
             // ProfileRemoveButton
             // 

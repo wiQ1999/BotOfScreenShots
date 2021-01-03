@@ -19,6 +19,8 @@ namespace BotOfScreenShots_Application.XMLSerilizer
                 File.Create(PROFILESPATH);
                 return new List<Profile>();
             }
+            else if (new FileInfo(PROFILESPATH).Length == 0)
+                return new List<Profile>();
 
             using (TextReader reader = new StreamReader(PROFILESPATH))
             {

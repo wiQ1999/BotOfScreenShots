@@ -26,7 +26,7 @@ namespace BotOfScreenShots_Application
         {
             get
             {
-                if (ProfilesList.SelectedIndex < 0)
+                if (_profilesList.Count < 1)
                     return null;
                 return _profilesList[ProfilesList.SelectedIndex];
             }
@@ -56,18 +56,24 @@ namespace BotOfScreenShots_Application
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
+            if (!Profile.IsSaved)
+            {
+                DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
 
-            if (dialog == DialogResult.Yes)
-                Save();
-            else if (dialog == DialogResult.Cancel)
-                e.Cancel = true;
+                if (dialog == DialogResult.Yes)
+                    Save();
+                else if (dialog == DialogResult.Cancel)
+                    e.Cancel = true;
+            }
         }
 
         private void DeserializeData()
         {
             _profilesList = _serializer.Deserialize();
+            if (_profilesList.Count == 0)
+                AddProfile();
             UpdateProfilesList();
+            SelectLastProfile();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -77,6 +83,7 @@ namespace BotOfScreenShots_Application
 
         private void Save()
         {
+            Profile.SaveProfile();
             Profile.Code = CodeArea.Lines;
             Profile.WorkArea = _workArea;
             Profile.IsPreview = PreviewCheckBox.Checked;
@@ -94,29 +101,37 @@ namespace BotOfScreenShots_Application
             ProfilesList.Items.AddRange(_profilesList.ToArray());
         }
 
-        private void ProfileAddButton_Click(object sender, EventArgs e)
+        private void SelectLastProfile()
+        {
+            ProfilesList.SelectedIndex = _profilesList.Count - 1;
+        }
+
+        private void AddProfile()
         {
             _profilesList.Add(new Profile("Profile" + Profile.ID));
             UpdateProfilesList();
-            ProfilesList.SelectedIndex = ProfilesList.Items.Count - 1;
+            SelectLastProfile();
+        }
+
+        private void ProfileAddButton_Click(object sender, EventArgs e)
+        {
+            Save();
+            AddProfile();
         }
 
         private void ProfileRemoveButton_Click(object sender, EventArgs e)
         {
-            if (ProfilesList.SelectedIndex > -1)
+            if (_profilesList.Count > 1)
             {
                 _profilesList.RemoveAt(ProfilesList.SelectedIndex);
                 UpdateProfilesList();
-                if (ProfilesList.Items.Count > 0)
-                    ProfilesList.SelectedIndex = ProfilesList.Items.Count - 1;
-                else
-                    ProfilesList.Text = string.Empty;
+                SelectLastProfile();
             }
         }
 
         private void ProfileChangeNameButton_Click(object sender, EventArgs e)
         {
-            if (ProfilesList.DropDownStyle == ComboBoxStyle.DropDownList && ProfilesList.SelectedIndex > -1)
+            if (ProfilesList.DropDownStyle == ComboBoxStyle.DropDownList)
             {
                 EnableControls(false);
                 ProfileAddButton.Enabled = false;
@@ -124,7 +139,7 @@ namespace BotOfScreenShots_Application
                 _profilesListTempIndex = ProfilesList.SelectedIndex;
                 ProfilesList.DropDownStyle = ComboBoxStyle.Simple;
             }
-            else if(ProfilesList.DropDownStyle == ComboBoxStyle.Simple)
+            else
             {
                 EnableControls(true);
                 ProfileAddButton.Enabled = true;
@@ -133,10 +148,11 @@ namespace BotOfScreenShots_Application
                 ProfilesList.DropDownStyle = ComboBoxStyle.DropDownList;
                 UpdateProfilesList();
                 ProfilesList.SelectedIndex = _profilesListTempIndex;
+                Profile.InitiateSave();
             }
         }
 
-        private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
+        private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)//to do
         {
             //FilesList
             PreviewCheckBox.Checked = Profile.IsPreview;
@@ -145,18 +161,34 @@ namespace BotOfScreenShots_Application
             CodeArea.Lines = Profile.Code;
         }
 
-        private void ProfileCheckSaved()
+        private void ProfilesList_DropDown(object sender, EventArgs e)
         {
-            if (ProfilesList.SelectedIndex > -1 && !Profile.IsSaved)
-            {
-                DialogResult dialog = MessageBox.Show("Do you want to save changes before shift profile?", "Data not saved", MessageBoxButtons.YesNo);
-
-                if (dialog == DialogResult.Yes)
-                    Save();
-            }
+            Save();
         }
 
         #endregion
+
+        private void CodeArea_Enter(object sender, EventArgs e)
+        {
+            Profile.InitiateSave();
+        }
+
+        private void WorkAreaButton_Click(object sender, EventArgs e)
+        {
+            Profile.InitiateSave();
+        }
+
+        private void PreviewCheckBox_Click(object sender, EventArgs e)
+        {
+            Profile.InitiateSave();
+        }
+
+        private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
+        {
+            Profile.InitiateSave();
+        }
+
+
 
         //muszę dodać zmianę właściwości IsSaved w profilu na false kiedy zmieniam workarea, zaznaczam checkboxy i kiedy piszę text w codearea
     }
