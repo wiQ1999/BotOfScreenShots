@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using Newtonsoft.Json;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace BotOfScreenShots_Application
 {
@@ -8,56 +9,108 @@ namespace BotOfScreenShots_Application
     {
         #region Prop
 
-        public static int ID;
+        const string FILESPATH = @".\Files\";
 
-        const string FILESPATH = @"./Files/";
+        private static int ID;
 
+        private readonly int _id;
+        private string _fullName;
         private string _name;
-        private string _localPath;
-        private string[] _code;
+        private string _code;
         private Rectangle _workArea;
         private bool _isPreview;
         private bool _isDeveloperMode;
         private bool _isSaved = true;
 
-        public string Name { get => _name; set => _name = value; }
-        public string LocalPath { get => _localPath; set => _localPath = value; }
-        public string[] Code { get => _code; set => _code = value; }
+        public int Id { get => _id; }
+        public string FullName { get => _fullName; private set => _fullName = value; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                string newS = CreateFullName(value);
+                RenameDirectory(newS);
+                _fullName = newS;
+            }
+        }
+        public string Code { get => _code; set => _code = value; }
         public Rectangle WorkArea { get => _workArea; set => _workArea = value; }
         public bool IsPreview { get => _isPreview; set => _isPreview = value; }
         public bool IsDeveloperMode { get => _isDeveloperMode; set => _isDeveloperMode = value; }
-        [XmlIgnore]
+        [JsonIgnore]
         public bool IsSaved { get => _isSaved; private set => _isSaved = value; }
+        [JsonIgnore]
+        public string LocalPath { get => FILESPATH + FullName; }
 
         #endregion
 
         #region ctor
 
-        public Profile() 
+        private Profile()
         {
-            ID++;
-        }
-
-        public Profile(string Name) : this()
-        {
-            _name = Name;
-            _localPath = FILESPATH + Name;
+            _id = ++ID;
             _workArea = Screen.PrimaryScreen.Bounds;
             _isPreview = true;
             _isDeveloperMode = false;
             _isSaved = true;
+            CreateDiretory();
+        }
+
+        protected Profile(bool isFullName) : this()
+        {
+            _fullName = CreateFullName("Profil");
+            _name = isFullName ? _fullName : "Profil" + _id;
+        }
+
+        public Profile(string name) : this()
+        {
+            _fullName = CreateFullName(name);
+            _name = name;
         }
 
         #endregion
 
         /// <summary>
-        /// Change profile name and it folder path
+        /// Static method responsible for generate new standard profile
         /// </summary>
-        /// <param name="newName">New profile name</param>
-        public void ChangeName(string newName)
+        /// <param name="isFullName">Do Name property has the same value as FullName property?</param>
+        /// <returns>New generated profile</returns>
+        public static Profile GenerateProfile(bool isFullName)
         {
-            //zmiana starego folderu na nową nazwę
-            _name = newName;
+            return new Profile(isFullName);
+        }
+
+        /// <summary>
+        /// Creates full name with profile id
+        /// </summary>
+        /// <param name="name">Profile name</param>
+        /// <returns>Profile full name</returns>
+        private string CreateFullName(string name)
+        {
+            return $"({_id}){name}";
+        }
+
+        /// <summary>
+        /// Rename directory responsible for storage profile images
+        /// </summary>
+        /// <param name="newDirectoryName">New directory name</param>
+        public void RenameDirectory(string newDirectoryName)
+        {
+            if (!Directory.Exists(LocalPath))
+                Directory.CreateDirectory(FILESPATH + newDirectoryName);
+            else
+                Directory.Move(LocalPath, FILESPATH + newDirectoryName);
+        }
+
+        /// <summary>
+        /// Creates directory to storage profile images
+        /// </summary>
+        private void CreateDiretory()
+        {
+            if (!Directory.Exists(LocalPath))
+                Directory.CreateDirectory(LocalPath);
         }
 
         /// <summary>

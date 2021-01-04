@@ -1,11 +1,12 @@
 ﻿using BotOfScreenShots_Algorithms;
 using BotOfScreenShots_Application.Interfaces;
 using BotOfScreenShots_Application.Selector;
-using BotOfScreenShots_Application.XMLSerilizer;
+using BotOfScreenShots_Application.Serilizer;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -18,7 +19,7 @@ namespace BotOfScreenShots_Application
         private Thread _previewWorker;
         private delegate void UpdatePreviewDelegate(Bitmap bitmap);
 
-        private readonly ISerializer _serializer = new XMLSerializer();
+        private readonly ISerializer _jsonSerializer = new JSONSerializer();
         private List<Profile> _profilesList;
         private int _profilesListTempIndex;
         private Rectangle _workArea = Rectangle.Empty;
@@ -82,11 +83,11 @@ namespace BotOfScreenShots_Application
         private void Save()
         {
             Profile.Save();
-            Profile.Code = CodeArea.Lines;
+            Profile.Code = CodeArea.Text;
             Profile.WorkArea = _workArea;
             Profile.IsPreview = PreviewCheckBox.Checked;
             Profile.IsDeveloperMode = DeveloperModeCheckBox.Checked;
-            _serializer.Serialize(_profilesList);
+            _jsonSerializer.Serialize(_profilesList);
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void DeserializeData()
         {
-            _profilesList = _serializer.Deserialize();
+            _profilesList = _jsonSerializer.Deserialize();
             if (_profilesList.Count == 0)
                 AddProfile();
             UpdateProfilesList();
@@ -145,15 +146,15 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void AddProfile()
         {
-            _profilesList.Add(new Profile("Profile" + Profile.ID));
+            _profilesList.Add(Profile.GenerateProfile(false));
             UpdateProfilesList();
             SelectLastProfile();
         }
 
         private void ProfileAddButton_Click(object sender, EventArgs e)
         {
-            Save();
             AddProfile();
+            Save();
         }
 
         private void ProfileRemoveButton_Click(object sender, EventArgs e)
@@ -181,7 +182,7 @@ namespace BotOfScreenShots_Application
                 EnableControls(true);
                 ProfileAddButton.Enabled = true;
                 ProfileRemoveButton.Enabled = true;
-                _profilesList[_profilesListTempIndex].ChangeName(ProfilesList.Text);
+                _profilesList[_profilesListTempIndex].Name = ProfilesList.Text;
                 ProfilesList.DropDownStyle = ComboBoxStyle.DropDownList;
                 UpdateProfilesList();
                 ProfilesList.SelectedIndex = _profilesListTempIndex;
@@ -195,7 +196,7 @@ namespace BotOfScreenShots_Application
             PreviewCheckBox.Checked = Profile.IsPreview;
             _workArea = Profile.WorkArea;
             DeveloperModeCheckBox.Checked = Profile.IsDeveloperMode;
-            CodeArea.Lines = Profile.Code;
+            CodeArea.Text = Profile.Code;
 
             InitializePreview();
         }
@@ -267,6 +268,17 @@ namespace BotOfScreenShots_Application
             }
         }
 
+        private void WorkAreaButton_Click(object sender, EventArgs e)
+        {
+            Profile.InitializeSave();
+            SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
+            selector.ShowDialog();
+            if (selector.Area != Rectangle.Empty)
+                _workArea = selector.Area;
+            selector.Close();
+            InitializePreview();
+        }
+
         private void PreviewCheckBox_Click(object sender, EventArgs e)
         {
             Profile.InitializeSave();
@@ -279,20 +291,49 @@ namespace BotOfScreenShots_Application
 
         #endregion
 
+        #region ScreenShot
+
+        private void ScreenShotButton_Click(object sender, EventArgs e)
+        {
+
+
+            RefreshFilesTreeView();
+        }
+
+        #endregion
+
+        #region FilesList
+
+        private void RefreshFilesTreeView()
+        {
+            foreach (string file in Directory.GetFiles(Profile.LocalPath, "*.png", SearchOption.AllDirectories))
+                FilesTreeView.Nodes.Add(file);
+        }
+
+        private void RefreshFilesButton_Click(object sender, EventArgs e)
+        {
+            RefreshFilesTreeView();
+        }
+
+        private void OpenDirectoryButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Directory.Exists(Profile.LocalPath))
+                    throw new Exception("Directory not found.");
+                System.Diagnostics.Process.Start(Profile.LocalPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot open directory\n" + ex.Message);
+            }
+        }
+
+        #endregion
+
         private void CodeArea_Enter(object sender, EventArgs e)
         {
             Profile.InitializeSave();
-        }
-
-        private void WorkAreaButton_Click(object sender, EventArgs e)
-        {
-            Profile.InitializeSave();
-            SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
-            selector.ShowDialog();
-            if (selector.Area != Rectangle.Empty)
-                _workArea = selector.Area;
-            selector.Close();
-            InitializePreview();
         }
 
         private void DeveloperModeCheckBox_Click(object sender, EventArgs e)

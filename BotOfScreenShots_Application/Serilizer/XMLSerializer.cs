@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace BotOfScreenShots_Application.XMLSerilizer
+namespace BotOfScreenShots_Application.Serilizer
 {
     public class XMLSerializer : ISerializer
     {

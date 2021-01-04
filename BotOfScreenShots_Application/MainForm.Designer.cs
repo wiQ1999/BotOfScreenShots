@@ -43,6 +43,8 @@ namespace BotOfScreenShots_Application
             this.ProfileRemoveButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ProfileChangeNameButton = new System.Windows.Forms.Button();
+            this.RefreshFilesButton = new System.Windows.Forms.Button();
+            this.OpenDirectoryButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +63,7 @@ namespace BotOfScreenShots_Application
             // 
             this.FilesTreeView.Location = new System.Drawing.Point(12, 41);
             this.FilesTreeView.Name = "FilesTreeView";
-            this.FilesTreeView.Size = new System.Drawing.Size(253, 206);
+            this.FilesTreeView.Size = new System.Drawing.Size(253, 174);
             this.FilesTreeView.TabIndex = 3;
             this.FilesTreeView.Visible = false;
             // 
@@ -116,6 +118,7 @@ namespace BotOfScreenShots_Application
             this.ScreenShotButton.TabIndex = 9;
             this.ScreenShotButton.Text = "Screen shot";
             this.ScreenShotButton.UseVisualStyleBackColor = true;
+            this.ScreenShotButton.Click += new System.EventHandler(this.ScreenShotButton_Click);
             // 
             // PlayButton
             // 
@@ -192,11 +195,33 @@ namespace BotOfScreenShots_Application
             this.ProfileChangeNameButton.UseVisualStyleBackColor = true;
             this.ProfileChangeNameButton.Click += new System.EventHandler(this.ProfileChangeNameButton_Click);
             // 
+            // RefreshFilesButton
+            // 
+            this.RefreshFilesButton.Location = new System.Drawing.Point(147, 223);
+            this.RefreshFilesButton.Name = "RefreshFilesButton";
+            this.RefreshFilesButton.Size = new System.Drawing.Size(119, 23);
+            this.RefreshFilesButton.TabIndex = 17;
+            this.RefreshFilesButton.Text = "Refresh list";
+            this.RefreshFilesButton.UseVisualStyleBackColor = true;
+            this.RefreshFilesButton.Click += new System.EventHandler(this.RefreshFilesButton_Click);
+            // 
+            // OpenDirectoryButton
+            // 
+            this.OpenDirectoryButton.Location = new System.Drawing.Point(12, 223);
+            this.OpenDirectoryButton.Name = "OpenDirectoryButton";
+            this.OpenDirectoryButton.Size = new System.Drawing.Size(119, 23);
+            this.OpenDirectoryButton.TabIndex = 18;
+            this.OpenDirectoryButton.Text = "Open directory";
+            this.OpenDirectoryButton.UseVisualStyleBackColor = true;
+            this.OpenDirectoryButton.Click += new System.EventHandler(this.OpenDirectoryButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.OpenDirectoryButton);
+            this.Controls.Add(this.RefreshFilesButton);
             this.Controls.Add(this.ProfileChangeNameButton);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ProfileRemoveButton);
@@ -237,6 +262,8 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.Button ProfileRemoveButton;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button ProfileChangeNameButton;
+        private System.Windows.Forms.Button RefreshFilesButton;
+        private System.Windows.Forms.Button OpenDirectoryButton;
     }
 }
 
