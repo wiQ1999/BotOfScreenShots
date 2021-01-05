@@ -22,7 +22,7 @@ namespace BotOfScreenShots_Application
         private readonly ISerializer _jsonSerializer = new JSONSerializer();
         private List<Profile> _profilesList;
         private int _profilesListTempIndex;
-        private Rectangle _workArea = Rectangle.Empty;
+        private Rectangle _workArea;
         
         /// <summary>
         /// Get current profile
@@ -41,6 +41,7 @@ namespace BotOfScreenShots_Application
 
         public MainForm()
         {
+            _workArea = Rectangle.Empty;
             InitializeComponent();
             CreatePreviewWorker();
             DeserializeData();
@@ -146,7 +147,7 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void AddProfile()
         {
-            _profilesList.Add(Profile.GenerateProfile(false));
+            _profilesList.Add(Profile.GenerateProfile(true));
             UpdateProfilesList();
             SelectLastProfile();
         }
@@ -161,6 +162,7 @@ namespace BotOfScreenShots_Application
         {
             if (_profilesList.Count > 1)
             {
+                Profile.Dispose();
                 _profilesList.RemoveAt(ProfilesList.SelectedIndex);
                 UpdateProfilesList();
                 SelectLastProfile();

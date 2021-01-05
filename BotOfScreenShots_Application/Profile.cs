@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
 namespace BotOfScreenShots_Application
 {
-    public class Profile
+    public class Profile : IDisposable
     {
         #region Prop
 
@@ -14,25 +15,21 @@ namespace BotOfScreenShots_Application
         private static int ID;
 
         private readonly int _id;
-        private string _fullName;
         private string _name;
         private string _code;
         private Rectangle _workArea;
         private bool _isPreview;
         private bool _isDeveloperMode;
-        private bool _isSaved = true;
+        private bool _isSaved;
 
         public int Id { get => _id; }
-        public string FullName { get => _fullName; private set => _fullName = value; }
         public string Name
         {
             get => _name;
             set
             {
+                RenameDirectory(value);
                 _name = value;
-                string newS = CreateFullName(value);
-                RenameDirectory(newS);
-                _fullName = newS;
             }
         }
         public string Code { get => _code; set => _code = value; }
@@ -42,32 +39,48 @@ namespace BotOfScreenShots_Application
         [JsonIgnore]
         public bool IsSaved { get => _isSaved; private set => _isSaved = value; }
         [JsonIgnore]
+        public string FullName { get => $"({_id}){_name}"; }
+        [JsonIgnore]
         public string LocalPath { get => FILESPATH + FullName; }
 
         #endregion
 
         #region ctor
 
-        private Profile()
+        [JsonConstructor]
+        private Profile(int id, string name)
         {
-            _id = ++ID;
+            ID = id;
+            _id = id;
+            _name = name;
             _workArea = Screen.PrimaryScreen.Bounds;
             _isPreview = true;
             _isDeveloperMode = false;
             _isSaved = true;
-            CreateDiretory();
         }
 
-        protected Profile(bool isFullName) : this()
+        private Profile()
         {
-            _fullName = CreateFullName("Profil");
-            _name = isFullName ? _fullName : "Profil" + _id;
+            _workArea = Screen.PrimaryScreen.Bounds;
+            _isPreview = true;
+            _isDeveloperMode = false;
+            _isSaved = true;
         }
 
-        public Profile(string name) : this()
+        protected Profile(bool isFileToCreate) : this()
         {
-            _fullName = CreateFullName(name);
+            _id = ++ID;
+            _name = "Profile" + _id;
+            if (isFileToCreate)
+                CreateDiretory();
+        }
+
+        public Profile(string name, bool isFileToCreate) : this()
+        {
+            _id = ++ID;
             _name = name;
+            if (isFileToCreate)
+                CreateDiretory();
         }
 
         #endregion
@@ -76,20 +89,11 @@ namespace BotOfScreenShots_Application
         /// Static method responsible for generate new standard profile
         /// </summary>
         /// <param name="isFullName">Do Name property has the same value as FullName property?</param>
+        /// <param name="isGenerateNewDirectory">Generate new directory?</param>
         /// <returns>New generated profile</returns>
-        public static Profile GenerateProfile(bool isFullName)
+        public static Profile GenerateProfile(bool isGenerateNewDirectory)
         {
-            return new Profile(isFullName);
-        }
-
-        /// <summary>
-        /// Creates full name with profile id
-        /// </summary>
-        /// <param name="name">Profile name</param>
-        /// <returns>Profile full name</returns>
-        private string CreateFullName(string name)
-        {
-            return $"({_id}){name}";
+            return new Profile(isGenerateNewDirectory);
         }
 
         /// <summary>
@@ -133,6 +137,12 @@ namespace BotOfScreenShots_Application
         public override string ToString()
         {
             return _name;
+        }
+
+        public void Dispose()
+        {
+            if (Directory.Exists(LocalPath))
+                Directory.Delete(LocalPath, true);
         }
     }
 }
