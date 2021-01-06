@@ -16,6 +16,7 @@ namespace BotOfScreenShots_Application.Selector
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
         const int DISTANCE = 10;
+        const int BORDERDISTANCE = 5;
 
         private readonly Brush _color;
 
@@ -44,10 +45,10 @@ namespace BotOfScreenShots_Application.Selector
         /// <param name="e">Method event</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(_color, new Rectangle(0, 0, ClientSize.Width, 10));
-            e.Graphics.FillRectangle(_color, new Rectangle(0, 0, 10, ClientSize.Height));
-            e.Graphics.FillRectangle(_color, new Rectangle(ClientSize.Width - 10, 0, 10, ClientSize.Height));
-            e.Graphics.FillRectangle(_color, new Rectangle(0, ClientSize.Height - 10, ClientSize.Width, 10));
+            e.Graphics.FillRectangle(_color, new Rectangle(0, 0, ClientSize.Width, BORDERDISTANCE));
+            e.Graphics.FillRectangle(_color, new Rectangle(0, 0, BORDERDISTANCE, ClientSize.Height));
+            e.Graphics.FillRectangle(_color, new Rectangle(ClientSize.Width - BORDERDISTANCE, 0, BORDERDISTANCE, ClientSize.Height));
+            e.Graphics.FillRectangle(_color, new Rectangle(0, ClientSize.Height - BORDERDISTANCE, ClientSize.Width, BORDERDISTANCE));
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace BotOfScreenShots_Application.Selector
         /// <summary>
         /// Saves area rectangle to property and closes form
         /// </summary>
-        private void SaveArea()
+        protected virtual void SaveArea()
         {
             Area = new Rectangle(Location, Size);
             Close();

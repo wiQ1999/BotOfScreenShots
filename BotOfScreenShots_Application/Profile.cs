@@ -100,12 +100,12 @@ namespace BotOfScreenShots_Application
         /// Rename directory responsible for storage profile images
         /// </summary>
         /// <param name="newDirectoryName">New directory name</param>
-        public void RenameDirectory(string newDirectoryName)
+        private void RenameDirectory(string newDirectoryName)
         {
-            if (!Directory.Exists(LocalPath))
-                Directory.CreateDirectory(FILESPATH + newDirectoryName);
+            if (Directory.Exists(LocalPath))
+                Directory.Move(LocalPath, FILESPATH + $"({_id}){newDirectoryName}");
             else
-                Directory.Move(LocalPath, FILESPATH + newDirectoryName);
+                Directory.CreateDirectory(FILESPATH + $"({_id}){newDirectoryName}");
         }
 
         /// <summary>

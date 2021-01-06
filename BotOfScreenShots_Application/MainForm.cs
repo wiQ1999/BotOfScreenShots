@@ -162,10 +162,15 @@ namespace BotOfScreenShots_Application
         {
             if (_profilesList.Count > 1)
             {
-                Profile.Dispose();
-                _profilesList.RemoveAt(ProfilesList.SelectedIndex);
-                UpdateProfilesList();
-                SelectLastProfile();
+                DialogResult dialog = MessageBox.Show($"Do you want to remove {Profile.Name}?", "Removing", MessageBoxButtons.YesNo);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    Profile.Dispose();
+                    _profilesList.RemoveAt(ProfilesList.SelectedIndex);
+                    UpdateProfilesList();
+                    SelectLastProfile();
+                }
             }
         }
 
@@ -297,8 +302,7 @@ namespace BotOfScreenShots_Application
 
         private void ScreenShotButton_Click(object sender, EventArgs e)
         {
-
-
+            new SelectorSaver(Brushes.IndianRed, Profile.LocalPath).Show();
             RefreshFilesTreeView();
         }
 
@@ -308,8 +312,16 @@ namespace BotOfScreenShots_Application
 
         private void RefreshFilesTreeView()
         {
-            foreach (string file in Directory.GetFiles(Profile.LocalPath, "*.png", SearchOption.AllDirectories))
-                FilesTreeView.Nodes.Add(file);
+            FilesTreeView.Nodes.Clear();
+
+            FileInfo[] files = new DirectoryInfo(Profile.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
+
+            //string[] t = Directory.GetFiles(Profile.LocalPath, "*.png", SearchOption.AllDirectories);
+            foreach (FileInfo file in files)
+            {
+                FilesTreeView.Nodes.Add(file.Name);
+            }
+
         }
 
         private void RefreshFilesButton_Click(object sender, EventArgs e)
