@@ -2,11 +2,14 @@
 using BotOfScreenShots_Application.Interfaces;
 using BotOfScreenShots_Application.Selector;
 using BotOfScreenShots_Application.Serilizer;
+using Microsoft.CSharp;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,6 +18,8 @@ namespace BotOfScreenShots_Application
     public partial class MainForm : Form
     {
         #region Prop
+
+        private CompilerParameters CompilerParams;
 
         private Thread _previewWorker;
         private delegate void UpdatePreviewDelegate(Bitmap bitmap);
@@ -46,6 +51,14 @@ namespace BotOfScreenShots_Application
             CreatePreviewWorker();
             DeserializeData();
             EnableControls(true);
+
+            CompilerParams = new CompilerParameters
+            {
+                GenerateInMemory = true,
+                TreatWarningsAsErrors = false,
+                GenerateExecutable = false,
+                CompilerOptions = "/optimize"
+            };
         }
 
         /// <summary>
@@ -197,14 +210,13 @@ namespace BotOfScreenShots_Application
             }
         }
 
-        private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)//to do
+        private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //FilesList
+            RefreshFilesTreeView();
             PreviewCheckBox.Checked = Profile.IsPreview;
             _workArea = Profile.WorkArea;
             DeveloperModeCheckBox.Checked = Profile.IsDeveloperMode;
             CodeArea.Text = Profile.Code;
-
             InitializePreview();
         }
 
@@ -312,16 +324,16 @@ namespace BotOfScreenShots_Application
 
         private void RefreshFilesTreeView()
         {
-            FilesTreeView.Nodes.Clear();
-
-            FileInfo[] files = new DirectoryInfo(Profile.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
-
-            //string[] t = Directory.GetFiles(Profile.LocalPath, "*.png", SearchOption.AllDirectories);
-            foreach (FileInfo file in files)
+            if (Directory.Exists(Profile.LocalPath))
             {
-                FilesTreeView.Nodes.Add(file.Name);
-            }
+                FilesTreeView.Nodes.Clear();
 
+                FileInfo[] files = new DirectoryInfo(Profile.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
+                foreach (FileInfo file in files)
+                {
+                    FilesTreeView.Nodes.Add(file.Name);
+                }
+            }
         }
 
         private void RefreshFilesButton_Click(object sender, EventArgs e)
@@ -345,6 +357,51 @@ namespace BotOfScreenShots_Application
 
         #endregion
 
+        #region CodeArea
+
+        private CompilerResults BuildCode()
+        {
+            string[] references = { "System.dll", "System.Windows.Forms.dll", "System.Drawing.dll", "BotOfScreenShots_Algorithms.dll" };
+            CompilerParams.ReferencedAssemblies.AddRange(references);
+
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerResults compile = provider.CompileAssemblyFromSource(CompilerParams, new[] { CodeArea.Text });
+
+            if (compile.Errors.HasErrors)
+            {
+                string errorResult = string.Empty;
+                foreach (CompilerError error in compile.Errors)
+                {
+                    errorResult += error.ToString() + "\n";
+                }
+                MessageBox.Show(errorResult);
+                return null;
+            }
+            return compile;
+        }
+
+        private void RunCode()
+        {
+            CompilerResults compile = BuildCode();
+
+            if (compile != null)
+            {
+                Module module = compile.CompiledAssembly.GetModules()[0];
+                if (module != null)
+                {
+                    Type moduleType = module.GetType("Test.Program");
+                    if (moduleType != null)
+                    {
+                        MethodInfo methodInfo = moduleType.GetMethod("Main");
+                        if (methodInfo != null)
+                        {
+                            methodInfo.Invoke(null, null);
+                        }
+                    }
+                }
+            }
+        }
+
         private void CodeArea_Enter(object sender, EventArgs e)
         {
             Profile.InitializeSave();
@@ -354,6 +411,19 @@ namespace BotOfScreenShots_Application
         {
             Profile.InitializeSave();
         }
+
+        private void BuildButton_Click(object sender, EventArgs e)
+        {
+            BuildCode();
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            RunCode();
+        }
+
+
+        #endregion
 
         
     }

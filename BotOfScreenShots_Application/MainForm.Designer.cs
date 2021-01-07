@@ -129,13 +129,16 @@ namespace BotOfScreenShots_Application
             this.PlayButton.TabIndex = 10;
             this.PlayButton.Text = "Play";
             this.PlayButton.UseVisualStyleBackColor = true;
+            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // CodeArea
             // 
+            this.CodeArea.AcceptsTab = true;
             this.CodeArea.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CodeArea.Enabled = false;
+            this.CodeArea.Font = new System.Drawing.Font("Consolas", 10F);
             this.CodeArea.Location = new System.Drawing.Point(272, 41);
             this.CodeArea.Multiline = true;
             this.CodeArea.Name = "CodeArea";
@@ -152,6 +155,7 @@ namespace BotOfScreenShots_Application
             this.BuildButton.TabIndex = 12;
             this.BuildButton.Text = "Build";
             this.BuildButton.UseVisualStyleBackColor = true;
+            this.BuildButton.Click += new System.EventHandler(this.BuildButton_Click);
             // 
             // DeveloperModeCheckBox
             // 
