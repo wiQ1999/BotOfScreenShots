@@ -19,7 +19,7 @@ namespace BotOfScreenShots_Application
     {
         #region Prop
 
-        private CompilerParameters CompilerParams;
+        private readonly CompilerParameters CompilerParams;
 
         private Thread _previewWorker;
         private delegate void UpdatePreviewDelegate(Bitmap bitmap);

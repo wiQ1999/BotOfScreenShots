@@ -19,9 +19,9 @@ namespace BotOfScreenShots_Algorithms
             //_MainBitmap = TakeScreenShot(WorkArea);
         }
 
-        public static Bitmap TakeScreenShot(Rectangle areaToCapture)
+        public static Bitmap TakeScreenShot(Rectangle areaToCapture, PixelFormat bitmapFormat = PixelFormat.Format32bppArgb)
         {
-            Bitmap result = new Bitmap(areaToCapture.Width, areaToCapture.Height, PixelFormat.Format32bppArgb);
+            Bitmap result = new Bitmap(areaToCapture.Width, areaToCapture.Height, bitmapFormat);
             using (Graphics graphics = Graphics.FromImage(result))
             {
                 graphics.CopyFromScreen(areaToCapture.X, areaToCapture.Y, 0, 0, areaToCapture.Size);
