@@ -20,6 +20,8 @@ namespace BotOfScreenShots_Application.Selector
         {
             base.SaveArea();
 
+            Visible = false;
+
             _bitmapToSave = ASearchImage.TakeScreenShot(Area);
             _viewer = new SelectorViewer(_bitmapToSave);
 
@@ -27,7 +29,17 @@ namespace BotOfScreenShots_Application.Selector
 
             _viewer.ShowDialog();
             if (_viewer.DialogResult == DialogResult.OK)
-                _bitmapToSave.Save(_path + "\\" + SelectorViewer.FileName + ".png", System.Drawing.Imaging.ImageFormat.Png);
+            {
+                try
+                {
+                    _bitmapToSave.Save(_path + "\\" + SelectorViewer.FileName + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                    DialogResult = DialogResult.OK;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
             else
                 _viewer.Close();
         }
@@ -87,6 +99,6 @@ namespace BotOfScreenShots_Application.Selector
             _viewer.Controls.Add(saveButton);
             _viewer.Controls.Add(cancelButton);
             _viewer.Controls.Add(viewPictureBox);
-        }
+        }//not used
     }
 }

@@ -82,6 +82,7 @@ namespace BotOfScreenShots_Application
             this.PreviewPictureBox.Location = new System.Drawing.Point(13, 281);
             this.PreviewPictureBox.Name = "PreviewPictureBox";
             this.PreviewPictureBox.Size = new System.Drawing.Size(253, 268);
+            this.PreviewPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.PreviewPictureBox.TabIndex = 6;
             this.PreviewPictureBox.TabStop = false;
             // 

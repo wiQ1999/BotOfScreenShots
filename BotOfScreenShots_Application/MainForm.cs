@@ -96,11 +96,19 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void Save()
         {
-            Profile.Save();
             Profile.Code = CodeArea.Text;
             Profile.WorkArea = _workArea;
             Profile.IsPreview = PreviewCheckBox.Checked;
             Profile.IsDeveloperMode = DeveloperModeCheckBox.Checked;
+            SerializeData();
+            Profile.Save();
+        }
+
+        /// <summary>
+        /// Serialize data to .xml file
+        /// </summary>
+        private void SerializeData()
+        {
             _jsonSerializer.Serialize(_profilesList);
         }
 
@@ -163,12 +171,12 @@ namespace BotOfScreenShots_Application
             _profilesList.Add(Profile.GenerateProfile(true));
             UpdateProfilesList();
             SelectLastProfile();
+            Save();
         }
 
         private void ProfileAddButton_Click(object sender, EventArgs e)
         {
             AddProfile();
-            Save();
         }
 
         private void ProfileRemoveButton_Click(object sender, EventArgs e)
@@ -183,6 +191,7 @@ namespace BotOfScreenShots_Application
                     _profilesList.RemoveAt(ProfilesList.SelectedIndex);
                     UpdateProfilesList();
                     SelectLastProfile();
+                    SerializeData();
                 }
             }
         }
@@ -278,7 +287,7 @@ namespace BotOfScreenShots_Application
                 {
                     using (Graphics graphics = Graphics.FromImage(bitmap))
                     {
-                        graphics.CopyFromScreen(Point.Empty, Point.Empty, _workArea.Size);
+                        graphics.CopyFromScreen(_workArea.Location, Point.Empty, _workArea.Size);
                     }
 
                     UpdatePreview(new Bitmap(bitmap, new Size((int)(bitmap.Width * scale), (int)(bitmap.Height * scale))));
@@ -314,8 +323,13 @@ namespace BotOfScreenShots_Application
 
         private void ScreenShotButton_Click(object sender, EventArgs e)
         {
-            new SelectorSaver(Brushes.IndianRed, Profile.LocalPath).Show();
-            RefreshFilesTreeView();
+            SelectorSaver selectorSaver = new SelectorSaver(Brushes.IndianRed, Profile.LocalPath);
+            if (selectorSaver.ShowDialog() == DialogResult.OK)
+            {
+                TimeSpan savingTime = DateTime.Now.TimeOfDay;
+                do RefreshFilesTreeView();
+                while (!File.Exists(SelectorViewer.FileName + ".png") && savingTime > savingTime.Add(TimeSpan.FromSeconds(3)));
+            }
         }
 
         #endregion
