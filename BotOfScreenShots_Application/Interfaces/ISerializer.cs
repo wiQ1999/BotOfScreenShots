@@ -4,7 +4,7 @@ namespace BotOfScreenShots_Application.Interfaces
 {
     public interface ISerializer
     {
-        void Serialize(List<Profile> list);
-        List<Profile> Deserialize();
+        void Serialize(List<ProfileCompiler> list);
+        List<ProfileCompiler> Deserialize();
     }
 }

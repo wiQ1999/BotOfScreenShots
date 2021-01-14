@@ -13,9 +13,9 @@ namespace BotOfScreenShots_Application.Serilizer
 
         private readonly JsonSerializer _json = new JsonSerializer();
 
-        public List<Profile> Deserialize()
+        public List<ProfileCompiler> Deserialize()
         {
-            List<Profile> result = new List<Profile>();
+            List<ProfileCompiler> result = new List<ProfileCompiler>();
 
             if (!File.Exists(PROFILESPATH))
                 return result;
@@ -25,7 +25,7 @@ namespace BotOfScreenShots_Application.Serilizer
                 using (TextReader reader = new StreamReader(PROFILESPATH))
                 {
                     string jsonString = reader.ReadToEnd();
-                    result = JsonConvert.DeserializeObject<List<Profile>>(jsonString);
+                    result = JsonConvert.DeserializeObject<List<ProfileCompiler>>(jsonString);
                 }
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace BotOfScreenShots_Application.Serilizer
             return result;
         }
 
-        public void Serialize(List<Profile> list)
+        public void Serialize(List<ProfileCompiler> list)
         {
             try
             {

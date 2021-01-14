@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,20 +20,18 @@ namespace BotOfScreenShots_Application
     {
         #region Prop
 
-        private readonly CompilerParameters CompilerParams;
-
         private Thread _previewWorker;
         private delegate void UpdatePreviewDelegate(Bitmap bitmap);
 
         private readonly ISerializer _jsonSerializer = new JSONSerializer();
-        private List<Profile> _profilesList;
+        private List<ProfileCompiler> _profilesList;
         private int _profilesListTempIndex;
         private Rectangle _workArea;
         
         /// <summary>
         /// Get current profile
         /// </summary>
-        public Profile Profile
+        public ProfileCompiler Profile
         {
             get
             {
@@ -41,7 +40,7 @@ namespace BotOfScreenShots_Application
                 return _profilesList[ProfilesList.SelectedIndex];
             }
         }
-
+        
         #endregion
 
         public MainForm()
@@ -52,13 +51,13 @@ namespace BotOfScreenShots_Application
             DeserializeData();
             EnableControls(true);
 
-            CompilerParams = new CompilerParameters
-            {
-                GenerateInMemory = true,
-                TreatWarningsAsErrors = false,
-                GenerateExecutable = false,
-                CompilerOptions = "/optimize"
-            };
+            //CompilerParams = new CompilerParameters
+            //{
+            //    GenerateInMemory = true,
+            //    TreatWarningsAsErrors = false,
+            //    GenerateExecutable = false,
+            //    CompilerOptions = "/optimize"
+            //};
         }
 
         /// <summary>
@@ -118,6 +117,7 @@ namespace BotOfScreenShots_Application
         private void DeserializeData()
         {
             _profilesList = _jsonSerializer.Deserialize();
+
             if (_profilesList.Count == 0)
                 AddProfile();
             UpdateProfilesList();
@@ -168,7 +168,7 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void AddProfile()
         {
-            _profilesList.Add(Profile.GenerateProfile(true));
+            _profilesList.Add(new ProfileCompiler(true));
             UpdateProfilesList();
             SelectLastProfile();
             Save();
@@ -373,49 +373,6 @@ namespace BotOfScreenShots_Application
 
         #region CodeArea
 
-        private CompilerResults BuildCode()
-        {
-            string[] references = { "System.dll", "System.Windows.Forms.dll", "System.Drawing.dll", "BotOfScreenShots_Algorithms.dll" };
-            CompilerParams.ReferencedAssemblies.AddRange(references);
-
-            CSharpCodeProvider provider = new CSharpCodeProvider();
-            CompilerResults compile = provider.CompileAssemblyFromSource(CompilerParams, new[] { CodeArea.Text });
-
-            if (compile.Errors.HasErrors)
-            {
-                string errorResult = string.Empty;
-                foreach (CompilerError error in compile.Errors)
-                {
-                    errorResult += error.ToString() + "\n";
-                }
-                MessageBox.Show(errorResult);
-                return null;
-            }
-            return compile;
-        }
-
-        private void RunCode()
-        {
-            CompilerResults compile = BuildCode();
-
-            if (compile != null)
-            {
-                Module module = compile.CompiledAssembly.GetModules()[0];
-                if (module != null)
-                {
-                    Type moduleType = module.GetType("Test.Program");
-                    if (moduleType != null)
-                    {
-                        MethodInfo methodInfo = moduleType.GetMethod("Main");
-                        if (methodInfo != null)
-                        {
-                            methodInfo.Invoke(null, null);
-                        }
-                    }
-                }
-            }
-        }
-
         private void CodeArea_Enter(object sender, EventArgs e)
         {
             Profile.InitializeSave();
@@ -428,12 +385,12 @@ namespace BotOfScreenShots_Application
 
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            BuildCode();
+
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            RunCode();
+            
         }
 
 

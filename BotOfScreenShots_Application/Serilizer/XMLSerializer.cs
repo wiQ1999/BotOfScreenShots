@@ -9,35 +9,35 @@ namespace BotOfScreenShots_Application.Serilizer
     {
         const string PROFILESPATH = @"./Profiles.xml";
 
-        public List<Profile> Deserialize()
+        public List<ProfileCompiler> Deserialize()
         {
-            List<Profile> result;
-            XmlSerializer deserializer = new XmlSerializer(typeof(List<Profile>));
+            List<ProfileCompiler> result;
+            XmlSerializer deserializer = new XmlSerializer(typeof(List<ProfileCompiler>));
 
             if (!File.Exists(PROFILESPATH))
             {
                 File.Create(PROFILESPATH);
-                return new List<Profile>();
+                return new List<ProfileCompiler>();
             }
             else if (new FileInfo(PROFILESPATH).Length == 0)
-                return new List<Profile>();
+                return new List<ProfileCompiler>();
 
             using (TextReader reader = new StreamReader(PROFILESPATH))
             {
-                result = (List<Profile>)deserializer.Deserialize(reader);
+                result = (List<ProfileCompiler>)deserializer.Deserialize(reader);
             }
 
             return result;
         }
 
-        public void Serialize(List<Profile> list)
+        public void Serialize(List<ProfileCompiler> list)
         {
             //if (list == null || list.Count < 1)
             //{
             //    throw new ArgumentNullException("Empty list of profiles.");
             //}
 
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Profile>));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<ProfileCompiler>));
 
             using (TextWriter writer = new StreamWriter(PROFILESPATH))
             {

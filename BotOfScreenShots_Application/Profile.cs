@@ -11,6 +11,12 @@ namespace BotOfScreenShots_Application
         #region Prop
 
         const string FILESPATH = @".\Files\";
+        const string STARTCODE =
+@"using System;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using BotOfScreenShots_Algorithms;";
 
         private static int ID;
 
@@ -48,7 +54,7 @@ namespace BotOfScreenShots_Application
         #region ctor
 
         [JsonConstructor]
-        private Profile(int id, string name)
+        protected Profile(int id, string name)
         {
             ID = id;
             _id = id;
@@ -65,6 +71,7 @@ namespace BotOfScreenShots_Application
             _isPreview = true;
             _isDeveloperMode = false;
             _isSaved = true;
+            //CODE STARTCODE!!!
         }
 
         protected Profile(bool isFileToCreate) : this()
@@ -75,13 +82,13 @@ namespace BotOfScreenShots_Application
                 CreateDiretory();
         }
 
-        public Profile(string name, bool isFileToCreate) : this()
-        {
-            _id = ++ID;
-            _name = name;
-            if (isFileToCreate)
-                CreateDiretory();
-        }
+        //public Profile(string name, bool isFileToCreate) : this()
+        //{
+        //    _id = ++ID;
+        //    _name = name;
+        //    if (isFileToCreate)
+        //        CreateDiretory();
+        //}
 
         #endregion
 
@@ -91,10 +98,10 @@ namespace BotOfScreenShots_Application
         /// <param name="isFullName">Do Name property has the same value as FullName property?</param>
         /// <param name="isGenerateNewDirectory">Generate new directory?</param>
         /// <returns>New generated profile</returns>
-        public static Profile GenerateProfile(bool isGenerateNewDirectory)
-        {
-            return new Profile(isGenerateNewDirectory);
-        }
+        //public static Profile GenerateProfile(bool isGenerateNewDirectory)
+        //{
+        //    return new Profile(isGenerateNewDirectory);
+        //}
 
         /// <summary>
         /// Rename directory responsible for storage profile images
