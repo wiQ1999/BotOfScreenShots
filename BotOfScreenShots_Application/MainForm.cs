@@ -31,7 +31,7 @@ namespace BotOfScreenShots_Application
         /// <summary>
         /// Get current profile
         /// </summary>
-        public ProfileCompiler Profile
+        public ProfileCompiler ProfileCompiler
         {
             get
             {
@@ -95,12 +95,13 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void Save()
         {
-            Profile.Code = CodeArea.Text;
-            Profile.WorkArea = _workArea;
-            Profile.IsPreview = PreviewCheckBox.Checked;
-            Profile.IsDeveloperMode = DeveloperModeCheckBox.Checked;
+            Profile tempProfile = (Profile)ProfileCompiler;
+            tempProfile.Code = CodeArea.Text;//DODAĆ PUBLICZBY PROP Z RZUTOWANIEM NA (PROFILE)
+            ProfileCompiler.WorkArea = _workArea;
+            ProfileCompiler.IsPreview = PreviewCheckBox.Checked;
+            ProfileCompiler.IsDeveloperMode = DeveloperModeCheckBox.Checked;
             SerializeData();
-            Profile.Save();
+            ProfileCompiler.Save();
         }
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace BotOfScreenShots_Application
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Profile.IsSaved)
+            if (!ProfileCompiler.IsSaved)
             {
                 DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
 
@@ -183,11 +184,11 @@ namespace BotOfScreenShots_Application
         {
             if (_profilesList.Count > 1)
             {
-                DialogResult dialog = MessageBox.Show($"Do you want to remove {Profile.Name}?", "Removing", MessageBoxButtons.YesNo);
+                DialogResult dialog = MessageBox.Show($"Do you want to remove {ProfileCompiler.Name}?", "Removing", MessageBoxButtons.YesNo);
 
                 if (dialog == DialogResult.Yes)
                 {
-                    Profile.Dispose();
+                    ProfileCompiler.Dispose();
                     _profilesList.RemoveAt(ProfilesList.SelectedIndex);
                     UpdateProfilesList();
                     SelectLastProfile();
@@ -215,17 +216,18 @@ namespace BotOfScreenShots_Application
                 ProfilesList.DropDownStyle = ComboBoxStyle.DropDownList;
                 UpdateProfilesList();
                 ProfilesList.SelectedIndex = _profilesListTempIndex;
-                Profile.InitializeSave();
+                ProfileCompiler.InitializeSave();
             }
         }
 
         private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshFilesTreeView();
-            PreviewCheckBox.Checked = Profile.IsPreview;
-            _workArea = Profile.WorkArea;
-            DeveloperModeCheckBox.Checked = Profile.IsDeveloperMode;
-            CodeArea.Text = Profile.Code;
+            PreviewCheckBox.Checked = ProfileCompiler.IsPreview;
+            _workArea = ProfileCompiler.WorkArea;
+            DeveloperModeCheckBox.Checked = ProfileCompiler.IsDeveloperMode;
+
+            CodeArea.Text = ProfileCompiler.Code;
             InitializePreview();
         }
 
@@ -298,7 +300,7 @@ namespace BotOfScreenShots_Application
 
         private void WorkAreaButton_Click(object sender, EventArgs e)
         {
-            Profile.InitializeSave();
+            ProfileCompiler.InitializeSave();
             SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
             selector.ShowDialog();
             if (selector.Area != Rectangle.Empty)
@@ -309,7 +311,7 @@ namespace BotOfScreenShots_Application
 
         private void PreviewCheckBox_Click(object sender, EventArgs e)
         {
-            Profile.InitializeSave();
+            ProfileCompiler.InitializeSave();
         }
 
         private void PreviewCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -323,7 +325,7 @@ namespace BotOfScreenShots_Application
 
         private void ScreenShotButton_Click(object sender, EventArgs e)
         {
-            SelectorSaver selectorSaver = new SelectorSaver(Brushes.IndianRed, Profile.LocalPath);
+            SelectorSaver selectorSaver = new SelectorSaver(Brushes.IndianRed, ProfileCompiler.LocalPath);
             if (selectorSaver.ShowDialog() == DialogResult.OK)
             {
                 TimeSpan savingTime = DateTime.Now.TimeOfDay;
@@ -338,11 +340,11 @@ namespace BotOfScreenShots_Application
 
         private void RefreshFilesTreeView()
         {
-            if (Directory.Exists(Profile.LocalPath))
+            if (Directory.Exists(ProfileCompiler.LocalPath))
             {
                 FilesTreeView.Nodes.Clear();
 
-                FileInfo[] files = new DirectoryInfo(Profile.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
+                FileInfo[] files = new DirectoryInfo(ProfileCompiler.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
                 foreach (FileInfo file in files)
                 {
                     FilesTreeView.Nodes.Add(file.Name);
@@ -359,9 +361,9 @@ namespace BotOfScreenShots_Application
         {
             try
             {
-                if (!Directory.Exists(Profile.LocalPath))
+                if (!Directory.Exists(ProfileCompiler.LocalPath))
                     throw new Exception("Directory not found.");
-                System.Diagnostics.Process.Start(Profile.LocalPath);
+                System.Diagnostics.Process.Start(ProfileCompiler.LocalPath);
             }
             catch (Exception ex)
             {
@@ -375,25 +377,25 @@ namespace BotOfScreenShots_Application
 
         private void CodeArea_Enter(object sender, EventArgs e)
         {
-            Profile.InitializeSave();
-            Profile.IsBuilded = false;
+            ProfileCompiler.InitializeSave();
+            ProfileCompiler.IsBuilded = false;
         }
 
         private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
         {
-            Profile.InitializeSave();
+            ProfileCompiler.InitializeSave();
         }
 
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            Profile.Save();
-            Profile.Build();
+            ProfileCompiler.Save();
+            ProfileCompiler.Build();
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            Profile.Save();
-            Profile.Run();
+            ProfileCompiler.Save();
+            ProfileCompiler.Run();
         }
 
 

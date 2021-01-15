@@ -11,16 +11,11 @@ namespace BotOfScreenShots_Application
         #region Prop
 
         const string FILESPATH = @".\Files\";
-        const string STARTCODE =
-@"using System;
-using System.Drawing;
-using System.Threading;
-using System.Windows.Forms;
-using BotOfScreenShots_Algorithms;";
 
         private static int ID;
 
         private readonly int _id;
+
         private string _name;
         private string _code;
         private Rectangle _workArea;
@@ -71,8 +66,6 @@ using BotOfScreenShots_Algorithms;";
             _isPreview = true;
             _isDeveloperMode = false;
             _isSaved = true;
-            //CODE STARTCODE!!!
-            _code = STARTCODE;
         }
 
         protected Profile(bool isFileToCreate) : this()

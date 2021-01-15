@@ -11,10 +11,16 @@ namespace BotOfScreenShots_Application
 {
     public class ProfileCompiler : Profile
     {
+        #region prop
+
         const string STARTINGCODE =
-             @" "
-            + " ";
-        const string ENDINGCODE = @"";
+             @"namespace " + NAMESPACE
+            + "{"
+            + "static class " + MAINCLASS
+            + "{";
+        const string ENDINGCODE =
+             @"}"
+            + "}";
         const string NAMESPACE = "BoSSCodeArea";
         const string MAINCLASS = "Program";
 
@@ -31,6 +37,10 @@ namespace BotOfScreenShots_Application
         public List<string> References { get => _references; set => _references = value; }
         [JsonIgnore]
         public bool IsBuilded { get => _isBuilded; set { _isBuilded = value; Save(); } }
+        [JsonIgnore]
+        public new string Code { get => STARTINGCODE + " \n" + base.Code + " \n" + ENDINGCODE; }
+
+        #endregion
 
         #region ctor
 
@@ -65,13 +75,12 @@ namespace BotOfScreenShots_Application
         public void Build()
         {
             if (!_isBuilded)
-                ConverCode();
+                _isBuilded = true;
 
             _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
             CSharpCodeProvider provider = new CSharpCodeProvider();
             _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
 
-            //komunikat błędu
             if (_compilerResult.Errors.HasErrors)
             {
                 MessageBox.Show(_compilerResult.Errors.ToString());
@@ -88,10 +97,10 @@ namespace BotOfScreenShots_Application
             Module module = _compilerResult.CompiledAssembly.GetModules()[0];
             if (module != null)
             {
-                Type moduleType = module.GetType(_codeElements.Namespace);
+                Type moduleType = module.GetType(NAMESPACE);
                 if (moduleType != null)
                 {
-                    MethodInfo methodInfo = moduleType.GetMethod(_codeElements.MainClass);
+                    MethodInfo methodInfo = moduleType.GetMethod(MAINCLASS);
                     if (methodInfo != null)
                     {
                         methodInfo.Invoke(null, null);
@@ -100,36 +109,36 @@ namespace BotOfScreenShots_Application
             }
         }
 
-        private void FindCodeElements()
-        {
-            string[] codeArray = Code.Split(';');
-            List<string> references = new List<string>(codeArray.Length);
-            bool isMainMethodExist = false;
+        //private void FindCodeElements()
+        //{
+        //    string[] codeArray = Code.Split(';');
+        //    List<string> references = new List<string>(codeArray.Length);
+        //    bool isMainMethodExist = false;
 
-            foreach (string codeLine in codeArray)
-            {
-                if (codeLine.Contains("using "))
-                    references.Add(codeLine.Trim(' ').Remove(0, 5) + ".dll");
-                else if (codeLine.Contains("namespace "))
-                    _codeElements.Namespace = codeLine.Trim(' ').Remove(0, 9);
-                else if (!isMainMethodExist)
-                {
-                    if (codeLine.Contains("class "))
-                        _codeElements.MainClass = codeLine.Trim(' ').Remove(0, 5);
-                    else if (codeLine.Contains("public static void Main()"))
-                    {
-                        if (_codeElements.MainClass != string.Empty)
-                            isMainMethodExist = true;
-                    }
-                }
-            }
-            _codeElements.References = references.ToArray();
-        }
+        //    foreach (string codeLine in codeArray)
+        //    {
+        //        if (codeLine.Contains("using "))
+        //            references.Add(codeLine.Trim(' ').Remove(0, 5) + ".dll");
+        //        else if (codeLine.Contains("namespace "))
+        //            _codeElements.Namespace = codeLine.Trim(' ').Remove(0, 9);
+        //        else if (!isMainMethodExist)
+        //        {
+        //            if (codeLine.Contains("class "))
+        //                _codeElements.MainClass = codeLine.Trim(' ').Remove(0, 5);
+        //            else if (codeLine.Contains("public static void Main()"))
+        //            {
+        //                if (_codeElements.MainClass != string.Empty)
+        //                    isMainMethodExist = true;
+        //            }
+        //        }
+        //    }
+        //    _codeElements.References = references.ToArray();
+        //}
 
-        private void ConverCode()
-        {
-            FindCodeElements();
-            _isBuilded = true;
-        }
+        //private void ConverCode()
+        //{
+        //    //FindCodeElements();
+        //    _isBuilded = true;
+        //}
     }
 }
