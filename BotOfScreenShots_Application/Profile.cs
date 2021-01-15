@@ -72,6 +72,7 @@ using BotOfScreenShots_Algorithms;";
             _isDeveloperMode = false;
             _isSaved = true;
             //CODE STARTCODE!!!
+            _code = STARTCODE;
         }
 
         protected Profile(bool isFileToCreate) : this()
@@ -82,26 +83,7 @@ using BotOfScreenShots_Algorithms;";
                 CreateDiretory();
         }
 
-        //public Profile(string name, bool isFileToCreate) : this()
-        //{
-        //    _id = ++ID;
-        //    _name = name;
-        //    if (isFileToCreate)
-        //        CreateDiretory();
-        //}
-
         #endregion
-
-        /// <summary>
-        /// Static method responsible for generate new standard profile
-        /// </summary>
-        /// <param name="isFullName">Do Name property has the same value as FullName property?</param>
-        /// <param name="isGenerateNewDirectory">Generate new directory?</param>
-        /// <returns>New generated profile</returns>
-        //public static Profile GenerateProfile(bool isGenerateNewDirectory)
-        //{
-        //    return new Profile(isGenerateNewDirectory);
-        //}
 
         /// <summary>
         /// Rename directory responsible for storage profile images

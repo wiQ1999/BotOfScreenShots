@@ -1,9 +1,9 @@
-﻿using BotOfScreenShots_Application.Struct;
-using Microsoft.CSharp;
+﻿using Microsoft.CSharp;
 using Newtonsoft.Json;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -11,19 +11,31 @@ namespace BotOfScreenShots_Application
 {
     public class ProfileCompiler : Profile
     {
+        const string STARTINGCODE =
+             @" "
+            + " ";
+        const string ENDINGCODE = @"";
+        const string NAMESPACE = "BoSSCodeArea";
+        const string MAINCLASS = "Program";
+
+        private readonly IList<string> _startignRefferences = new ReadOnlyCollection<string>(new[]
+        {
+            "System.dll"
+        });
         private readonly CompilerParameters _compilerParams;
+
         private CompilerResults _compilerResult;
-        private CodeElements _codeElements;//{ "System.dll", "System.Windows.Forms.dll", "System.Drawing.dll", "BotOfScreenShots_Algorithms.dll", "System.Threading.dll" }
+        private List<string> _references;
         private bool _isBuilded;
 
+        public List<string> References { get => _references; set => _references = value; }
         [JsonIgnore]
-        public bool IsBuilded { get => _isBuilded; set => _isBuilded = value; }
-        private new string Code { get => ConverCode(base.Code); }
+        public bool IsBuilded { get => _isBuilded; set { _isBuilded = value; Save(); } }
+
+        #region ctor
 
         [JsonConstructor]
-        private ProfileCompiler(int id, string name) : base(id, name) { }
-
-        public ProfileCompiler(bool isFileToCreate) : base(isFileToCreate)
+        private ProfileCompiler(int id, string name) : base(id, name)
         {
             _compilerParams = new CompilerParameters
             {
@@ -35,11 +47,29 @@ namespace BotOfScreenShots_Application
             _isBuilded = false;
         }
 
+        public ProfileCompiler(bool isFileToCreate) : base(isFileToCreate)
+        {
+            _compilerParams = new CompilerParameters
+            {
+                GenerateInMemory = true,
+                TreatWarningsAsErrors = false,
+                GenerateExecutable = false,
+                CompilerOptions = "/optimize"
+            };
+            _references = (List<string>)_startignRefferences;
+            _isBuilded = false;
+        }
+
+        #endregion
+
         public void Build()
         {
-            _compilerParams.ReferencedAssemblies.AddRange(_codeElements.References);
+            if (!_isBuilded)
+                ConverCode();
+
+            _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
             CSharpCodeProvider provider = new CSharpCodeProvider();
-            _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, new[] { Code });
+            _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
 
             //komunikat błędu
             if (_compilerResult.Errors.HasErrors)
@@ -52,7 +82,7 @@ namespace BotOfScreenShots_Application
 
         public void Run()
         {
-            if (_isBuilded == false)
+            if (!_isBuilded)
                 Build();
 
             Module module = _compilerResult.CompiledAssembly.GetModules()[0];
@@ -70,10 +100,9 @@ namespace BotOfScreenShots_Application
             }
         }
 
-        private void FindCodeElements(string code)
+        private void FindCodeElements()
         {
-            _codeElements = new CodeElements();
-            string[] codeArray = code.Split(';');
+            string[] codeArray = Code.Split(';');
             List<string> references = new List<string>(codeArray.Length);
             bool isMainMethodExist = false;
 
@@ -97,13 +126,10 @@ namespace BotOfScreenShots_Application
             _codeElements.References = references.ToArray();
         }
 
-        private string ConverCode(string code)
+        private void ConverCode()
         {
-            FindCodeElements(code);
-
-            //if (IsDeveloperMode)
-
-            return null;
+            FindCodeElements();
+            _isBuilded = true;
         }
     }
 }

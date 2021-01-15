@@ -376,6 +376,7 @@ namespace BotOfScreenShots_Application
         private void CodeArea_Enter(object sender, EventArgs e)
         {
             Profile.InitializeSave();
+            Profile.IsBuilded = false;
         }
 
         private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
@@ -385,12 +386,14 @@ namespace BotOfScreenShots_Application
 
         private void BuildButton_Click(object sender, EventArgs e)
         {
-
+            Profile.Save();
+            Profile.Build();
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            
+            Profile.Save();
+            Profile.Run();
         }
 
 
