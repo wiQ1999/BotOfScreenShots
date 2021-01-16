@@ -29,6 +29,9 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ProfilesList = new System.Windows.Forms.ComboBox();
             this.FilesTreeView = new System.Windows.Forms.TreeView();
             this.ProfileAddButton = new System.Windows.Forms.Button();
@@ -45,9 +48,11 @@ namespace BotOfScreenShots_Application
             this.RefreshFilesButton = new System.Windows.Forms.Button();
             this.OpenDirectoryButton = new System.Windows.Forms.Button();
             this.ReferencesList = new System.Windows.Forms.DataGridView();
+            this.BackgroundPanel = new System.Windows.Forms.Panel();
             this.Libraries = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).BeginInit();
+            this.BackgroundPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProfilesList
@@ -56,22 +61,22 @@ namespace BotOfScreenShots_Application
             this.ProfilesList.FormattingEnabled = true;
             this.ProfilesList.Location = new System.Drawing.Point(12, 12);
             this.ProfilesList.Name = "ProfilesList";
-            this.ProfilesList.Size = new System.Drawing.Size(200, 21);
+            this.ProfilesList.Size = new System.Drawing.Size(219, 21);
             this.ProfilesList.TabIndex = 2;
             this.ProfilesList.DropDown += new System.EventHandler(this.ProfilesList_DropDown);
             this.ProfilesList.SelectedIndexChanged += new System.EventHandler(this.ProfilesList_SelectedIndexChanged);
             // 
             // FilesTreeView
             // 
-            this.FilesTreeView.Location = new System.Drawing.Point(12, 41);
+            this.FilesTreeView.Location = new System.Drawing.Point(12, 39);
             this.FilesTreeView.Name = "FilesTreeView";
-            this.FilesTreeView.Size = new System.Drawing.Size(253, 174);
+            this.FilesTreeView.Size = new System.Drawing.Size(300, 200);
             this.FilesTreeView.TabIndex = 3;
             this.FilesTreeView.Visible = false;
             // 
             // ProfileAddButton
             // 
-            this.ProfileAddButton.Location = new System.Drawing.Point(218, 12);
+            this.ProfileAddButton.Location = new System.Drawing.Point(291, 12);
             this.ProfileAddButton.Name = "ProfileAddButton";
             this.ProfileAddButton.Size = new System.Drawing.Size(21, 21);
             this.ProfileAddButton.TabIndex = 4;
@@ -81,9 +86,9 @@ namespace BotOfScreenShots_Application
             // 
             // PreviewPictureBox
             // 
-            this.PreviewPictureBox.Location = new System.Drawing.Point(13, 281);
+            this.PreviewPictureBox.Location = new System.Drawing.Point(12, 272);
             this.PreviewPictureBox.Name = "PreviewPictureBox";
-            this.PreviewPictureBox.Size = new System.Drawing.Size(253, 268);
+            this.PreviewPictureBox.Size = new System.Drawing.Size(300, 300);
             this.PreviewPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.PreviewPictureBox.TabIndex = 6;
             this.PreviewPictureBox.TabStop = false;
@@ -91,9 +96,9 @@ namespace BotOfScreenShots_Application
             // WorkAreaButton
             // 
             this.WorkAreaButton.Enabled = false;
-            this.WorkAreaButton.Location = new System.Drawing.Point(13, 252);
+            this.WorkAreaButton.Location = new System.Drawing.Point(12, 578);
             this.WorkAreaButton.Name = "WorkAreaButton";
-            this.WorkAreaButton.Size = new System.Drawing.Size(75, 23);
+            this.WorkAreaButton.Size = new System.Drawing.Size(112, 21);
             this.WorkAreaButton.TabIndex = 7;
             this.WorkAreaButton.Text = "Work area";
             this.WorkAreaButton.UseVisualStyleBackColor = true;
@@ -103,7 +108,7 @@ namespace BotOfScreenShots_Application
             // 
             this.PreviewCheckBox.AutoSize = true;
             this.PreviewCheckBox.Enabled = false;
-            this.PreviewCheckBox.Location = new System.Drawing.Point(175, 256);
+            this.PreviewCheckBox.Location = new System.Drawing.Point(248, 581);
             this.PreviewCheckBox.Name = "PreviewCheckBox";
             this.PreviewCheckBox.Size = new System.Drawing.Size(64, 17);
             this.PreviewCheckBox.TabIndex = 8;
@@ -115,9 +120,9 @@ namespace BotOfScreenShots_Application
             // ScreenShotButton
             // 
             this.ScreenShotButton.Enabled = false;
-            this.ScreenShotButton.Location = new System.Drawing.Point(94, 252);
+            this.ScreenShotButton.Location = new System.Drawing.Point(130, 578);
             this.ScreenShotButton.Name = "ScreenShotButton";
-            this.ScreenShotButton.Size = new System.Drawing.Size(75, 23);
+            this.ScreenShotButton.Size = new System.Drawing.Size(112, 21);
             this.ScreenShotButton.TabIndex = 9;
             this.ScreenShotButton.Text = "Screen shot";
             this.ScreenShotButton.UseVisualStyleBackColor = true;
@@ -126,7 +131,7 @@ namespace BotOfScreenShots_Application
             // PlayButton
             // 
             this.PlayButton.Enabled = false;
-            this.PlayButton.Location = new System.Drawing.Point(475, 12);
+            this.PlayButton.Location = new System.Drawing.Point(248, 15);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(147, 23);
             this.PlayButton.TabIndex = 10;
@@ -142,17 +147,17 @@ namespace BotOfScreenShots_Application
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CodeArea.Enabled = false;
             this.CodeArea.Font = new System.Drawing.Font("Consolas", 10F);
-            this.CodeArea.Location = new System.Drawing.Point(272, 41);
+            this.CodeArea.Location = new System.Drawing.Point(3, 44);
             this.CodeArea.Multiline = true;
             this.CodeArea.Name = "CodeArea";
-            this.CodeArea.Size = new System.Drawing.Size(450, 508);
+            this.CodeArea.Size = new System.Drawing.Size(495, 540);
             this.CodeArea.TabIndex = 11;
-            this.CodeArea.Enter += new System.EventHandler(this.CodeArea_Enter);
+            this.CodeArea.TextChanged += new System.EventHandler(this.CodeArea_TextChanged);
             // 
             // BuildButton
             // 
             this.BuildButton.Enabled = false;
-            this.BuildButton.Location = new System.Drawing.Point(394, 12);
+            this.BuildButton.Location = new System.Drawing.Point(167, 15);
             this.BuildButton.Name = "BuildButton";
             this.BuildButton.Size = new System.Drawing.Size(75, 23);
             this.BuildButton.TabIndex = 12;
@@ -162,7 +167,7 @@ namespace BotOfScreenShots_Application
             // 
             // ProfileRemoveButton
             // 
-            this.ProfileRemoveButton.Location = new System.Drawing.Point(245, 12);
+            this.ProfileRemoveButton.Location = new System.Drawing.Point(264, 12);
             this.ProfileRemoveButton.Name = "ProfileRemoveButton";
             this.ProfileRemoveButton.Size = new System.Drawing.Size(21, 21);
             this.ProfileRemoveButton.TabIndex = 14;
@@ -172,7 +177,7 @@ namespace BotOfScreenShots_Application
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(313, 11);
+            this.SaveButton.Location = new System.Drawing.Point(73, 15);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 15;
@@ -182,7 +187,7 @@ namespace BotOfScreenShots_Application
             // 
             // ProfileChangeNameButton
             // 
-            this.ProfileChangeNameButton.Location = new System.Drawing.Point(272, 12);
+            this.ProfileChangeNameButton.Location = new System.Drawing.Point(237, 12);
             this.ProfileChangeNameButton.Name = "ProfileChangeNameButton";
             this.ProfileChangeNameButton.Size = new System.Drawing.Size(21, 21);
             this.ProfileChangeNameButton.TabIndex = 16;
@@ -192,9 +197,9 @@ namespace BotOfScreenShots_Application
             // 
             // RefreshFilesButton
             // 
-            this.RefreshFilesButton.Location = new System.Drawing.Point(147, 223);
+            this.RefreshFilesButton.Location = new System.Drawing.Point(166, 245);
             this.RefreshFilesButton.Name = "RefreshFilesButton";
-            this.RefreshFilesButton.Size = new System.Drawing.Size(119, 23);
+            this.RefreshFilesButton.Size = new System.Drawing.Size(146, 21);
             this.RefreshFilesButton.TabIndex = 17;
             this.RefreshFilesButton.Text = "Refresh list";
             this.RefreshFilesButton.UseVisualStyleBackColor = true;
@@ -202,9 +207,9 @@ namespace BotOfScreenShots_Application
             // 
             // OpenDirectoryButton
             // 
-            this.OpenDirectoryButton.Location = new System.Drawing.Point(12, 223);
+            this.OpenDirectoryButton.Location = new System.Drawing.Point(12, 245);
             this.OpenDirectoryButton.Name = "OpenDirectoryButton";
-            this.OpenDirectoryButton.Size = new System.Drawing.Size(119, 23);
+            this.OpenDirectoryButton.Size = new System.Drawing.Size(146, 21);
             this.OpenDirectoryButton.TabIndex = 18;
             this.OpenDirectoryButton.Text = "Open directory";
             this.OpenDirectoryButton.UseVisualStyleBackColor = true;
@@ -213,33 +218,78 @@ namespace BotOfScreenShots_Application
             // ReferencesList
             // 
             this.ReferencesList.AllowUserToOrderColumns = true;
-            this.ReferencesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ReferencesList.AllowUserToResizeColumns = false;
+            this.ReferencesList.AllowUserToResizeRows = false;
+            this.ReferencesList.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.ReferencesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReferencesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.ReferencesList.ColumnHeadersHeight = 21;
+            this.ReferencesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ReferencesList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Libraries});
-            this.ReferencesList.Location = new System.Drawing.Point(728, 41);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ReferencesList.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ReferencesList.Location = new System.Drawing.Point(822, 12);
+            this.ReferencesList.MultiSelect = false;
             this.ReferencesList.Name = "ReferencesList";
-            this.ReferencesList.Size = new System.Drawing.Size(144, 508);
+            this.ReferencesList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReferencesList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.ReferencesList.RowHeadersWidth = 25;
+            this.ReferencesList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.ReferencesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ReferencesList.Size = new System.Drawing.Size(150, 584);
             this.ReferencesList.TabIndex = 20;
+            this.ReferencesList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.ReferencesList_CellValueChanged);
+            // 
+            // BackgroundPanel
+            // 
+            this.BackgroundPanel.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.BackgroundPanel.Controls.Add(this.CodeArea);
+            this.BackgroundPanel.Controls.Add(this.SaveButton);
+            this.BackgroundPanel.Controls.Add(this.BuildButton);
+            this.BackgroundPanel.Controls.Add(this.PlayButton);
+            this.BackgroundPanel.Location = new System.Drawing.Point(318, 12);
+            this.BackgroundPanel.Name = "BackgroundPanel";
+            this.BackgroundPanel.Size = new System.Drawing.Size(502, 587);
+            this.BackgroundPanel.TabIndex = 21;
             // 
             // Libraries
             // 
             this.Libraries.HeaderText = "Libraries";
             this.Libraries.Name = "Libraries";
+            this.Libraries.Width = 125;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 561);
+            this.ClientSize = new System.Drawing.Size(984, 611);
+            this.Controls.Add(this.BackgroundPanel);
             this.Controls.Add(this.ReferencesList);
             this.Controls.Add(this.OpenDirectoryButton);
             this.Controls.Add(this.RefreshFilesButton);
             this.Controls.Add(this.ProfileChangeNameButton);
-            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ProfileRemoveButton);
-            this.Controls.Add(this.BuildButton);
-            this.Controls.Add(this.CodeArea);
-            this.Controls.Add(this.PlayButton);
             this.Controls.Add(this.ScreenShotButton);
             this.Controls.Add(this.PreviewCheckBox);
             this.Controls.Add(this.WorkAreaButton);
@@ -247,12 +297,14 @@ namespace BotOfScreenShots_Application
             this.Controls.Add(this.ProfileAddButton);
             this.Controls.Add(this.FilesTreeView);
             this.Controls.Add(this.ProfilesList);
-            this.MinimumSize = new System.Drawing.Size(800, 600);
+            this.MinimumSize = new System.Drawing.Size(900, 600);
             this.Name = "MainForm";
             this.Text = "BotOfScreenShots";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).EndInit();
+            this.BackgroundPanel.ResumeLayout(false);
+            this.BackgroundPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -276,6 +328,7 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.Button RefreshFilesButton;
         private System.Windows.Forms.Button OpenDirectoryButton;
         private System.Windows.Forms.DataGridView ReferencesList;
+        private System.Windows.Forms.Panel BackgroundPanel;
         private System.Windows.Forms.DataGridViewTextBoxColumn Libraries;
     }
 }

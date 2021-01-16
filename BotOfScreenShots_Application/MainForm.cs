@@ -98,12 +98,12 @@ namespace BotOfScreenShots_Application
             Profile.Code = CodeArea.Text;
             Profile.WorkArea = _workArea;
             Profile.IsPreview = PreviewCheckBox.Checked;
-            //ProfileCompiler.References.Clear();
-            //foreach (DataGridViewRow row in ReferencesList.Rows)
-            //{
-            //    ProfileCompiler.References.Add(Convert.ToString(row.Cells[0].Value));
-            //}
-            ProfileCompiler.References = ReferencesList.Rows.Cast<DataGridViewRow>().Select(x => x.Cells[0].Value ?? ).ToList();
+            ProfileCompiler.References.Clear();
+            foreach (DataGridViewRow row in ReferencesList.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                    ProfileCompiler.References.Add(Convert.ToString(row.Cells[0].Value));
+            }
             SerializeData();
             Profile.Save();
         }
@@ -379,15 +379,10 @@ namespace BotOfScreenShots_Application
 
         #region CodeArea
 
-        private void CodeArea_Enter(object sender, EventArgs e)
+        private void CodeArea_TextChanged(object sender, EventArgs e)
         {
             ProfileCompiler.IsBuilded = false;
         }
-
-        //private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
-        //{
-        //    Profile.InitializeSave();
-        //}
 
         private void BuildButton_Click(object sender, EventArgs e)
         {
@@ -405,5 +400,16 @@ namespace BotOfScreenShots_Application
 
 
         #endregion
+
+        #region ReferencesList
+
+
+
+        #endregion
+
+        private void ReferencesList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            MessageBox.Show("TEST");
+        }
     }
 }
