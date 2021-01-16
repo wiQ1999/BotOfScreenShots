@@ -32,7 +32,7 @@ namespace BotOfScreenShots_Application.Selector
             this.FileNameTextBox = new System.Windows.Forms.TextBox();
             this.ViewPictureBox = new System.Windows.Forms.PictureBox();
             this.FormatLabel = new System.Windows.Forms.Label();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.CancelViewButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ViewPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -63,15 +63,15 @@ namespace BotOfScreenShots_Application.Selector
             this.FormatLabel.TabIndex = 2;
             this.FormatLabel.Text = ".png";
             // 
-            // CancelButton
+            // CancelViewButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(396, 12);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 20);
-            this.CancelButton.TabIndex = 3;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelViewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelViewButton.Location = new System.Drawing.Point(396, 12);
+            this.CancelViewButton.Name = "CancelViewButton";
+            this.CancelViewButton.Size = new System.Drawing.Size(75, 20);
+            this.CancelViewButton.TabIndex = 3;
+            this.CancelViewButton.Text = "Cancel";
+            this.CancelViewButton.UseVisualStyleBackColor = true;
             // 
             // SaveButton
             // 
@@ -89,7 +89,7 @@ namespace BotOfScreenShots_Application.Selector
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 261);
             this.Controls.Add(this.SaveButton);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.CancelViewButton);
             this.Controls.Add(this.FormatLabel);
             this.Controls.Add(this.ViewPictureBox);
             this.Controls.Add(this.FileNameTextBox);
@@ -107,7 +107,7 @@ namespace BotOfScreenShots_Application.Selector
         private System.Windows.Forms.TextBox FileNameTextBox;
         private System.Windows.Forms.PictureBox ViewPictureBox;
         private System.Windows.Forms.Label FormatLabel;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button CancelViewButton;
         private System.Windows.Forms.Button SaveButton;
     }
 }

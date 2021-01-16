@@ -29,7 +29,7 @@ namespace BotOfScreenShots_Application
         private Rectangle _workArea;
         
         /// <summary>
-        /// Get current profile
+        /// Get current profile with compiler
         /// </summary>
         public ProfileCompiler ProfileCompiler
         {
@@ -39,6 +39,14 @@ namespace BotOfScreenShots_Application
                     return null;
                 return _profilesList[ProfilesList.SelectedIndex];
             }
+        }
+
+        /// <summary>
+        /// Get current base profile
+        /// </summary>
+        public Profile Profile
+        {
+            get => (Profile)ProfileCompiler;
         }
         
         #endregion
@@ -50,14 +58,6 @@ namespace BotOfScreenShots_Application
             CreatePreviewWorker();
             DeserializeData();
             EnableControls(true);
-
-            //CompilerParams = new CompilerParameters
-            //{
-            //    GenerateInMemory = true,
-            //    TreatWarningsAsErrors = false,
-            //    GenerateExecutable = false,
-            //    CompilerOptions = "/optimize"
-            //};
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace BotOfScreenShots_Application
             SaveButton.Enabled = isEnable;
             BuildButton.Enabled = isEnable;
             PlayButton.Enabled = isEnable;
-            DeveloperModeCheckBox.Enabled = isEnable;
+            ReferencesList.Enabled = isEnable;
             CodeArea.Enabled = isEnable;
         }
 
@@ -95,13 +95,17 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void Save()
         {
-            Profile tempProfile = (Profile)ProfileCompiler;
-            tempProfile.Code = CodeArea.Text;//DODAĆ PUBLICZBY PROP Z RZUTOWANIEM NA (PROFILE)
-            ProfileCompiler.WorkArea = _workArea;
-            ProfileCompiler.IsPreview = PreviewCheckBox.Checked;
-            ProfileCompiler.IsDeveloperMode = DeveloperModeCheckBox.Checked;
+            Profile.Code = CodeArea.Text;
+            Profile.WorkArea = _workArea;
+            Profile.IsPreview = PreviewCheckBox.Checked;
+            //ProfileCompiler.References.Clear();
+            //foreach (DataGridViewRow row in ReferencesList.Rows)
+            //{
+            //    ProfileCompiler.References.Add(Convert.ToString(row.Cells[0].Value));
+            //}
+            ProfileCompiler.References = ReferencesList.Rows.Cast<DataGridViewRow>().Select(x => x.Cells[0].Value ?? ).ToList();
             SerializeData();
-            ProfileCompiler.Save();
+            Profile.Save();
         }
 
         /// <summary>
@@ -122,12 +126,12 @@ namespace BotOfScreenShots_Application
             if (_profilesList.Count == 0)
                 AddProfile();
             UpdateProfilesList();
-            SelectLastProfile();
+            SetLastProfile();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!ProfileCompiler.IsSaved)
+            if (!Profile.IsSaved)
             {
                 DialogResult dialog = MessageBox.Show("Do you want to save changes before exit?", "Exiting", MessageBoxButtons.YesNoCancel);
 
@@ -159,7 +163,7 @@ namespace BotOfScreenShots_Application
         /// <summary>
         /// Selects last profile on profiles list
         /// </summary>
-        private void SelectLastProfile()
+        private void SetLastProfile()
         {
             ProfilesList.SelectedIndex = _profilesList.Count - 1;
         }
@@ -171,7 +175,7 @@ namespace BotOfScreenShots_Application
         {
             _profilesList.Add(new ProfileCompiler(true));
             UpdateProfilesList();
-            SelectLastProfile();
+            SetLastProfile();
             Save();
         }
 
@@ -184,14 +188,14 @@ namespace BotOfScreenShots_Application
         {
             if (_profilesList.Count > 1)
             {
-                DialogResult dialog = MessageBox.Show($"Do you want to remove {ProfileCompiler.Name}?", "Removing", MessageBoxButtons.YesNo);
+                DialogResult dialog = MessageBox.Show($"Do you want to remove {Profile.Name}?", "Removing", MessageBoxButtons.YesNo);
 
                 if (dialog == DialogResult.Yes)
                 {
-                    ProfileCompiler.Dispose();
+                    Profile.Dispose();
                     _profilesList.RemoveAt(ProfilesList.SelectedIndex);
                     UpdateProfilesList();
-                    SelectLastProfile();
+                    SetLastProfile();
                     SerializeData();
                 }
             }
@@ -223,11 +227,11 @@ namespace BotOfScreenShots_Application
         private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshFilesTreeView();
-            PreviewCheckBox.Checked = ProfileCompiler.IsPreview;
-            _workArea = ProfileCompiler.WorkArea;
-            DeveloperModeCheckBox.Checked = ProfileCompiler.IsDeveloperMode;
-
-            CodeArea.Text = ProfileCompiler.Code;
+            PreviewCheckBox.Checked = Profile.IsPreview;
+            _workArea = Profile.WorkArea;
+            ReferencesList.Rows.Clear();
+            ReferencesList.Rows.Add(ProfileCompiler.References.ToArray());
+            CodeArea.Text = Profile.Code;
             InitializePreview();
         }
 
@@ -300,7 +304,7 @@ namespace BotOfScreenShots_Application
 
         private void WorkAreaButton_Click(object sender, EventArgs e)
         {
-            ProfileCompiler.InitializeSave();
+            Profile.InitializeSave();
             SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
             selector.ShowDialog();
             if (selector.Area != Rectangle.Empty)
@@ -311,7 +315,7 @@ namespace BotOfScreenShots_Application
 
         private void PreviewCheckBox_Click(object sender, EventArgs e)
         {
-            ProfileCompiler.InitializeSave();
+            Profile.InitializeSave();
         }
 
         private void PreviewCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -325,7 +329,7 @@ namespace BotOfScreenShots_Application
 
         private void ScreenShotButton_Click(object sender, EventArgs e)
         {
-            SelectorSaver selectorSaver = new SelectorSaver(Brushes.IndianRed, ProfileCompiler.LocalPath);
+            SelectorSaver selectorSaver = new SelectorSaver(Brushes.IndianRed, Profile.LocalPath);
             if (selectorSaver.ShowDialog() == DialogResult.OK)
             {
                 TimeSpan savingTime = DateTime.Now.TimeOfDay;
@@ -340,11 +344,11 @@ namespace BotOfScreenShots_Application
 
         private void RefreshFilesTreeView()
         {
-            if (Directory.Exists(ProfileCompiler.LocalPath))
+            if (Directory.Exists(Profile.LocalPath))
             {
                 FilesTreeView.Nodes.Clear();
 
-                FileInfo[] files = new DirectoryInfo(ProfileCompiler.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
+                FileInfo[] files = new DirectoryInfo(Profile.LocalPath).GetFiles("*.png", SearchOption.AllDirectories);
                 foreach (FileInfo file in files)
                 {
                     FilesTreeView.Nodes.Add(file.Name);
@@ -361,9 +365,9 @@ namespace BotOfScreenShots_Application
         {
             try
             {
-                if (!Directory.Exists(ProfileCompiler.LocalPath))
+                if (!Directory.Exists(Profile.LocalPath))
                     throw new Exception("Directory not found.");
-                System.Diagnostics.Process.Start(ProfileCompiler.LocalPath);
+                System.Diagnostics.Process.Start(Profile.LocalPath);
             }
             catch (Exception ex)
             {
@@ -377,30 +381,29 @@ namespace BotOfScreenShots_Application
 
         private void CodeArea_Enter(object sender, EventArgs e)
         {
-            ProfileCompiler.InitializeSave();
             ProfileCompiler.IsBuilded = false;
         }
 
-        private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
-        {
-            ProfileCompiler.InitializeSave();
-        }
+        //private void DeveloperModeCheckBox_Click(object sender, EventArgs e)
+        //{
+        //    Profile.InitializeSave();
+        //}
 
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            ProfileCompiler.Save();
+            Save();
             ProfileCompiler.Build();
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            ProfileCompiler.Save();
+            Save();
+            Hide();
             ProfileCompiler.Run();
+            Show();
         }
 
 
         #endregion
-
-        
     }
 }

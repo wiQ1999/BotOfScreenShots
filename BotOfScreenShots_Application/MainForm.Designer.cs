@@ -39,13 +39,15 @@ namespace BotOfScreenShots_Application
             this.PlayButton = new System.Windows.Forms.Button();
             this.CodeArea = new System.Windows.Forms.TextBox();
             this.BuildButton = new System.Windows.Forms.Button();
-            this.DeveloperModeCheckBox = new System.Windows.Forms.CheckBox();
             this.ProfileRemoveButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ProfileChangeNameButton = new System.Windows.Forms.Button();
             this.RefreshFilesButton = new System.Windows.Forms.Button();
             this.OpenDirectoryButton = new System.Windows.Forms.Button();
+            this.ReferencesList = new System.Windows.Forms.DataGridView();
+            this.Libraries = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).BeginInit();
             this.SuspendLayout();
             // 
             // ProfilesList
@@ -143,7 +145,7 @@ namespace BotOfScreenShots_Application
             this.CodeArea.Location = new System.Drawing.Point(272, 41);
             this.CodeArea.Multiline = true;
             this.CodeArea.Name = "CodeArea";
-            this.CodeArea.Size = new System.Drawing.Size(500, 508);
+            this.CodeArea.Size = new System.Drawing.Size(450, 508);
             this.CodeArea.TabIndex = 11;
             this.CodeArea.Enter += new System.EventHandler(this.CodeArea_Enter);
             // 
@@ -157,18 +159,6 @@ namespace BotOfScreenShots_Application
             this.BuildButton.Text = "Build";
             this.BuildButton.UseVisualStyleBackColor = true;
             this.BuildButton.Click += new System.EventHandler(this.BuildButton_Click);
-            // 
-            // DeveloperModeCheckBox
-            // 
-            this.DeveloperModeCheckBox.AutoSize = true;
-            this.DeveloperModeCheckBox.Enabled = false;
-            this.DeveloperModeCheckBox.Location = new System.Drawing.Point(629, 15);
-            this.DeveloperModeCheckBox.Name = "DeveloperModeCheckBox";
-            this.DeveloperModeCheckBox.Size = new System.Drawing.Size(104, 17);
-            this.DeveloperModeCheckBox.TabIndex = 13;
-            this.DeveloperModeCheckBox.Text = "Developer mode";
-            this.DeveloperModeCheckBox.UseVisualStyleBackColor = true;
-            this.DeveloperModeCheckBox.Click += new System.EventHandler(this.DeveloperModeCheckBox_Click);
             // 
             // ProfileRemoveButton
             // 
@@ -220,17 +210,33 @@ namespace BotOfScreenShots_Application
             this.OpenDirectoryButton.UseVisualStyleBackColor = true;
             this.OpenDirectoryButton.Click += new System.EventHandler(this.OpenDirectoryButton_Click);
             // 
+            // ReferencesList
+            // 
+            this.ReferencesList.AllowUserToOrderColumns = true;
+            this.ReferencesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ReferencesList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Libraries});
+            this.ReferencesList.Location = new System.Drawing.Point(728, 41);
+            this.ReferencesList.Name = "ReferencesList";
+            this.ReferencesList.Size = new System.Drawing.Size(144, 508);
+            this.ReferencesList.TabIndex = 20;
+            // 
+            // Libraries
+            // 
+            this.Libraries.HeaderText = "Libraries";
+            this.Libraries.Name = "Libraries";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(884, 561);
+            this.Controls.Add(this.ReferencesList);
             this.Controls.Add(this.OpenDirectoryButton);
             this.Controls.Add(this.RefreshFilesButton);
             this.Controls.Add(this.ProfileChangeNameButton);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ProfileRemoveButton);
-            this.Controls.Add(this.DeveloperModeCheckBox);
             this.Controls.Add(this.BuildButton);
             this.Controls.Add(this.CodeArea);
             this.Controls.Add(this.PlayButton);
@@ -246,6 +252,7 @@ namespace BotOfScreenShots_Application
             this.Text = "BotOfScreenShots";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -263,12 +270,13 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.Button PlayButton;
         private System.Windows.Forms.TextBox CodeArea;
         private System.Windows.Forms.Button BuildButton;
-        private System.Windows.Forms.CheckBox DeveloperModeCheckBox;
         private System.Windows.Forms.Button ProfileRemoveButton;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button ProfileChangeNameButton;
         private System.Windows.Forms.Button RefreshFilesButton;
         private System.Windows.Forms.Button OpenDirectoryButton;
+        private System.Windows.Forms.DataGridView ReferencesList;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Libraries;
     }
 }
 

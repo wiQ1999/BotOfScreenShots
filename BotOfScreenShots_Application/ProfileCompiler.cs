@@ -5,6 +5,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 
 namespace BotOfScreenShots_Application
@@ -13,20 +14,21 @@ namespace BotOfScreenShots_Application
     {
         #region prop
 
-        const string STARTINGCODE =
-             @"namespace " + NAMESPACE
-            + "{"
-            + "static class " + MAINCLASS
-            + "{";
-        const string ENDINGCODE =
-             @"}"
-            + "}";
         const string NAMESPACE = "BoSSCodeArea";
         const string MAINCLASS = "Program";
+        const string HEADERCODE =
+            "namespace " + NAMESPACE + "\r\n" +
+            "{\r\n" +
+            "static class " + MAINCLASS + "\r\n" +
+            "{\r\n";
+        const string BOTTOMCODE =
+            "}\r\n" + 
+            "}";
 
         private readonly IList<string> _startignRefferences = new ReadOnlyCollection<string>(new[]
         {
-            "System.dll"
+            "System.dll",
+            "System.Windows.Forms.dll"
         });
         private readonly CompilerParameters _compilerParams;
 
@@ -36,9 +38,9 @@ namespace BotOfScreenShots_Application
 
         public List<string> References { get => _references; set => _references = value; }
         [JsonIgnore]
-        public bool IsBuilded { get => _isBuilded; set { _isBuilded = value; Save(); } }
+        public bool IsBuilded { get => _isBuilded; set { if (!value) InitializeSave(); _isBuilded = value; } }
         [JsonIgnore]
-        public new string Code { get => STARTINGCODE + " \n" + base.Code + " \n" + ENDINGCODE; }
+        public new string Code { get => TransformReferences() + "\r\n" + HEADERCODE + "\r\n" + base.Code + "\r\n" + BOTTOMCODE; }
 
         #endregion
 
@@ -66,79 +68,68 @@ namespace BotOfScreenShots_Application
                 GenerateExecutable = false,
                 CompilerOptions = "/optimize"
             };
-            _references = (List<string>)_startignRefferences;
+            _references = new List<string>();
+            foreach (string refference in _startignRefferences)
+            {
+                _references.Add(refference);
+            }
             _isBuilded = false;
         }
 
         #endregion
 
+        /// <summary>
+        /// Build code by C# compiler
+        /// </summary>
         public void Build()
         {
             if (!_isBuilded)
-                _isBuilded = true;
-
-            _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
-            CSharpCodeProvider provider = new CSharpCodeProvider();
-            _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
-
-            if (_compilerResult.Errors.HasErrors)
             {
-                MessageBox.Show(_compilerResult.Errors.ToString());
-                return;
+                _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
+                CSharpCodeProvider provider = new CSharpCodeProvider();
+                _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
+
+                if (_compilerResult.Errors.HasErrors)
+                    MessageBox.Show(_compilerResult.Errors.ToString());
+                _isBuilded = true;
             }
-            _isBuilded = true;
         }
 
+        /// <summary>
+        /// Runs code and trigger Build method if it is necessary
+        /// </summary>
         public void Run()
         {
-            if (!_isBuilded)
-                Build();
+            Build();
 
-            Module module = _compilerResult.CompiledAssembly.GetModules()[0];
-            if (module != null)
-            {
-                Type moduleType = module.GetType(NAMESPACE);
-                if (moduleType != null)
+            if (_isBuilded)
+            { 
+                try
                 {
-                    MethodInfo methodInfo = moduleType.GetMethod(MAINCLASS);
-                    if (methodInfo != null)
-                    {
-                        methodInfo.Invoke(null, null);
-                    }
+                    MethodInfo methodInfo = _compilerResult.CompiledAssembly.GetModules()[0].GetType(NAMESPACE + "." + MAINCLASS).GetMethod("Main");
+                    if (methodInfo == null)
+                        throw new Exception("Nie znaleziono metody \"Main\" jako punktu wejścia.");
+                    methodInfo.Invoke(null, null);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
 
-        //private void FindCodeElements()
-        //{
-        //    string[] codeArray = Code.Split(';');
-        //    List<string> references = new List<string>(codeArray.Length);
-        //    bool isMainMethodExist = false;
+        /// <summary>
+        /// Transforms references to the code type
+        /// </summary>
+        /// <returns>Transformed string with all usings from references</returns>
+        private string TransformReferences()
+        {
+            StringBuilder resultReferences = new StringBuilder();
 
-        //    foreach (string codeLine in codeArray)
-        //    {
-        //        if (codeLine.Contains("using "))
-        //            references.Add(codeLine.Trim(' ').Remove(0, 5) + ".dll");
-        //        else if (codeLine.Contains("namespace "))
-        //            _codeElements.Namespace = codeLine.Trim(' ').Remove(0, 9);
-        //        else if (!isMainMethodExist)
-        //        {
-        //            if (codeLine.Contains("class "))
-        //                _codeElements.MainClass = codeLine.Trim(' ').Remove(0, 5);
-        //            else if (codeLine.Contains("public static void Main()"))
-        //            {
-        //                if (_codeElements.MainClass != string.Empty)
-        //                    isMainMethodExist = true;
-        //            }
-        //        }
-        //    }
-        //    _codeElements.References = references.ToArray();
-        //}
+            foreach (string reference in _references)
+                resultReferences.AppendLine($"using {reference.Remove(reference.Length - 4)};");
 
-        //private void ConverCode()
-        //{
-        //    //FindCodeElements();
-        //    _isBuilded = true;
-        //}
+            return resultReferences.ToString(); ;
+        }
     }
 }

@@ -11,6 +11,11 @@ namespace BotOfScreenShots_Application
         #region Prop
 
         const string FILESPATH = @".\Files\";
+        const string STARTINGCODE =
+            "public static void Main()\r\n" +
+            "{\r\n" +
+            "\tMessageBox.Show(\"Hello World!\");\r\n" +
+            "}";
 
         private static int ID;
 
@@ -62,6 +67,7 @@ namespace BotOfScreenShots_Application
 
         private Profile()
         {
+            _code = STARTINGCODE;
             _workArea = Screen.PrimaryScreen.Bounds;
             _isPreview = true;
             _isDeveloperMode = false;
@@ -79,7 +85,7 @@ namespace BotOfScreenShots_Application
         #endregion
 
         /// <summary>
-        /// Rename directory responsible for storage profile images
+        /// Renames directory responsible for storage profile images
         /// </summary>
         /// <param name="newDirectoryName">New directory name</param>
         private void RenameDirectory(string newDirectoryName)
