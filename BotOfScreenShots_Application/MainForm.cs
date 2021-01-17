@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-//TEST GIT
+
 namespace BotOfScreenShots_Application
 {
     public partial class MainForm : Form
@@ -56,6 +56,7 @@ namespace BotOfScreenShots_Application
             _workArea = Rectangle.Empty;
             InitializeComponent();
             CreatePreviewWorker();
+            FillDataGridView();
             DeserializeData();
             EnableControls(true);
         }
@@ -75,6 +76,16 @@ namespace BotOfScreenShots_Application
             PlayButton.Enabled = isEnable;
             ReferencesList.Enabled = isEnable;
             CodeArea.Enabled = isEnable;
+        }
+
+        /// <summary>
+        /// Fill and specify references list parameters
+        /// </summary>
+        private void FillDataGridView()
+        {
+            ReferencesList.Columns.Add("Libraries", "Libraries");
+            ReferencesList.Columns["Libraries"].Resizable = DataGridViewTriState.False;
+            ReferencesList.Columns["Libraries"].Width = 120;
         }
 
         /// <summary>
@@ -227,11 +238,12 @@ namespace BotOfScreenShots_Application
         private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshFilesTreeView();
-            PreviewCheckBox.Checked = Profile.IsPreview;
             _workArea = Profile.WorkArea;
             ReferencesList.Rows.Clear();
-            ReferencesList.Rows.Add(ProfileCompiler.References.ToArray());
+            foreach (string references in ProfileCompiler.References)
+                ReferencesList.Rows.Add(references);
             CodeArea.Text = Profile.Code;
+            PreviewCheckBox.Checked = Profile.IsPreview;
             InitializePreview();
         }
 
@@ -287,17 +299,17 @@ namespace BotOfScreenShots_Application
         private void CaptureWorkArea()
         {
             float scale = Math.Min((float)PreviewPictureBox.Width / _workArea.Width, (float)PreviewPictureBox.Height / _workArea.Height);
-            using (Bitmap bitmap = new Bitmap(_workArea.Width, _workArea.Height, PixelFormat.Format32bppArgb))
+            using (Bitmap bitmap = new Bitmap(_workArea.Width, _workArea.Height))
             {
                 while (true)
                 {
+                    Thread.Sleep(100);
                     using (Graphics graphics = Graphics.FromImage(bitmap))
                     {
                         graphics.CopyFromScreen(_workArea.Location, Point.Empty, _workArea.Size);
                     }
 
                     UpdatePreview(new Bitmap(bitmap, new Size((int)(bitmap.Width * scale), (int)(bitmap.Height * scale))));
-                    Thread.Sleep(100);
                 }
             }
         }
@@ -403,13 +415,13 @@ namespace BotOfScreenShots_Application
 
         #region ReferencesList
 
-
+        private void ReferencesList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            Profile.InitializeSave();
+        }
 
         #endregion
 
-        private void ReferencesList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            MessageBox.Show("TEST");
-        }
+
     }
 }

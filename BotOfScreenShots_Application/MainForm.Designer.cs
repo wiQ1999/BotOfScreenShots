@@ -49,7 +49,6 @@ namespace BotOfScreenShots_Application
             this.OpenDirectoryButton = new System.Windows.Forms.Button();
             this.ReferencesList = new System.Windows.Forms.DataGridView();
             this.BackgroundPanel = new System.Windows.Forms.Panel();
-            this.Libraries = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).BeginInit();
             this.BackgroundPanel.SuspendLayout();
@@ -232,8 +231,6 @@ namespace BotOfScreenShots_Application
             this.ReferencesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.ReferencesList.ColumnHeadersHeight = 21;
             this.ReferencesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.ReferencesList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Libraries});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -273,12 +270,6 @@ namespace BotOfScreenShots_Application
             this.BackgroundPanel.Size = new System.Drawing.Size(502, 587);
             this.BackgroundPanel.TabIndex = 21;
             // 
-            // Libraries
-            // 
-            this.Libraries.HeaderText = "Libraries";
-            this.Libraries.Name = "Libraries";
-            this.Libraries.Width = 125;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -297,7 +288,7 @@ namespace BotOfScreenShots_Application
             this.Controls.Add(this.ProfileAddButton);
             this.Controls.Add(this.FilesTreeView);
             this.Controls.Add(this.ProfilesList);
-            this.MinimumSize = new System.Drawing.Size(900, 600);
+            this.MinimumSize = new System.Drawing.Size(900, 599);
             this.Name = "MainForm";
             this.Text = "BotOfScreenShots";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -329,7 +320,6 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.Button OpenDirectoryButton;
         private System.Windows.Forms.DataGridView ReferencesList;
         private System.Windows.Forms.Panel BackgroundPanel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Libraries;
     }
 }
 
