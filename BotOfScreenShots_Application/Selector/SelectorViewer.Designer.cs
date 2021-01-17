@@ -93,6 +93,8 @@ namespace BotOfScreenShots_Application.Selector
             this.Controls.Add(this.FormatLabel);
             this.Controls.Add(this.ViewPictureBox);
             this.Controls.Add(this.FileNameTextBox);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(500, 300);
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "SelectorViewer";
             this.Text = "Save image";

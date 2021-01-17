@@ -1,16 +1,10 @@
-﻿using BotOfScreenShots_Algorithms;
-using BotOfScreenShots_Application.Interfaces;
+﻿using BotOfScreenShots_Application.Interfaces;
 using BotOfScreenShots_Application.Selector;
 using BotOfScreenShots_Application.Serilizer;
-using Microsoft.CSharp;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -27,6 +21,7 @@ namespace BotOfScreenShots_Application
         private List<ProfileCompiler> _profilesList;
         private int _profilesListTempIndex;
         private Rectangle _workArea;
+        private bool _startButton;
         
         /// <summary>
         /// Get current profile with compiler
@@ -54,6 +49,7 @@ namespace BotOfScreenShots_Application
         public MainForm()
         {
             _workArea = Rectangle.Empty;
+            _startButton = true;
             InitializeComponent();
             CreatePreviewWorker();
             FillDataGridView();
@@ -252,6 +248,23 @@ namespace BotOfScreenShots_Application
             Save();
         }
 
+        private void FilesTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            PreviewCheckBox.Checked = false;
+            string path = Profile.LocalPath + "\\" + e.Node.Text;
+            if (File.Exists(path))
+            {
+                Bitmap bitmapFromPath = (Bitmap)Image.FromFile(path);
+                float scale = GetScaleToPreview(bitmapFromPath.Width, bitmapFromPath.Height);
+                PreviewPictureBox.Image = new Bitmap(bitmapFromPath, new Size((int)(bitmapFromPath.Width * scale), (int)(bitmapFromPath.Height * scale)));
+            }
+            else
+            {
+                MessageBox.Show("Image is not found");
+                RefreshFilesTreeView();
+            }
+        }
+
         #endregion
 
         #region Preview
@@ -261,6 +274,7 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void InitializePreview()
         {
+            PreviewPictureBox.Image = null;
             if (PreviewCheckBox.Checked && !_previewWorker.IsAlive)
             {
                 _previewWorker.Start();
@@ -268,13 +282,11 @@ namespace BotOfScreenShots_Application
             else if (PreviewCheckBox.Checked == false)
             {
                 _previewWorker.Abort();
-                PreviewPictureBox.Image = null;
                 CreatePreviewWorker();
             }
             else
             {
                 _previewWorker.Abort();
-                PreviewPictureBox.Image = null;
                 CreatePreviewWorker();
                 _previewWorker.Start();
             }
@@ -294,11 +306,22 @@ namespace BotOfScreenShots_Application
         }
 
         /// <summary>
+        /// Get scale to image adapted to PreviePictureBox
+        /// </summary>
+        /// <param name="width">Width of image to scale</param>
+        /// <param name="height">Height of image to scale</param>
+        /// <returns>Image scale</returns>
+        private float GetScaleToPreview(int width, int height)
+        {
+            return Math.Min((float)PreviewPictureBox.Width / width, (float)PreviewPictureBox.Height / height);
+        }
+
+        /// <summary>
         /// Captures a work area and updates preview in the infinite loop
         /// </summary>
         private void CaptureWorkArea()
         {
-            float scale = Math.Min((float)PreviewPictureBox.Width / _workArea.Width, (float)PreviewPictureBox.Height / _workArea.Height);
+            float scale = GetScaleToPreview(_workArea.Width, _workArea.Height);
             using (Bitmap bitmap = new Bitmap(_workArea.Width, _workArea.Height))
             {
                 while (true)
@@ -325,14 +348,10 @@ namespace BotOfScreenShots_Application
             InitializePreview();
         }
 
-        private void PreviewCheckBox_Click(object sender, EventArgs e)
-        {
-            Profile.InitializeSave();
-        }
-
         private void PreviewCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             InitializePreview();
+            Profile.InitializeSave();
         }
 
         #endregion
@@ -393,7 +412,7 @@ namespace BotOfScreenShots_Application
 
         private void CodeArea_TextChanged(object sender, EventArgs e)
         {
-            ProfileCompiler.IsBuilded = false;
+            Profile.InitializeSave();
         }
 
         private void BuildButton_Click(object sender, EventArgs e)
@@ -404,10 +423,20 @@ namespace BotOfScreenShots_Application
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            if (_startButton)
+            {
+                ProfileCompiler.Run(_startButton);
+                _startButton = false;
+            }
+            else
+            {
+                ProfileCompiler.Run(_startButton);
+                _startButton = true;
+            }
             Save();
-            Hide();
-            ProfileCompiler.Run();
-            Show();
+            //Hide();
+            //ProfileCompiler.Run();
+            //Show();
         }
 
 
@@ -420,8 +449,9 @@ namespace BotOfScreenShots_Application
             Profile.InitializeSave();
         }
 
+
         #endregion
 
-
+        
     }
 }

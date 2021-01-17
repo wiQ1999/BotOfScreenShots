@@ -19,9 +19,9 @@ namespace BotOfScreenShots_Algorithms
             //_MainBitmap = TakeScreenShot(WorkArea);
         }
 
-        public static Bitmap TakeScreenShot(Rectangle areaToCapture, PixelFormat bitmapFormat = PixelFormat.Format32bppArgb)
+        public static Bitmap TakeScreenShot(Rectangle areaToCapture)
         {
-            Bitmap result = new Bitmap(areaToCapture.Width, areaToCapture.Height, bitmapFormat);
+            Bitmap result = new Bitmap(areaToCapture.Width, areaToCapture.Height, PixelFormat.Format24bppRgb);
             using (Graphics graphics = Graphics.FromImage(result))
             {
                 graphics.CopyFromScreen(areaToCapture.X, areaToCapture.Y, 0, 0, areaToCapture.Size);
@@ -50,7 +50,7 @@ namespace BotOfScreenShots_Algorithms
         protected int[][] GetPixelArray(Bitmap bitmap)
         {
             var result = new int[bitmap.Height][];
-            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
 
             for (int y = 0; y < bitmap.Height; ++y)
             {

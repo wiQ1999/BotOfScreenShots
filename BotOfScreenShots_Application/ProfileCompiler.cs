@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BotOfScreenShots_Application
@@ -25,6 +26,8 @@ namespace BotOfScreenShots_Application
             "}\r\n" + 
             "}";
 
+        private Thread _codeOnFlyWorker;
+
         private readonly IList<string> _startignRefferences = new ReadOnlyCollection<string>(new[]
         {
             "System.dll",
@@ -34,11 +37,8 @@ namespace BotOfScreenShots_Application
 
         private CompilerResults _compilerResult;
         private List<string> _references;
-        private bool _isBuilded;
 
         public List<string> References { get => _references; set => _references = value; }
-        [JsonIgnore]
-        public bool IsBuilded { get => _isBuilded; set { if (!value) InitializeSave(); _isBuilded = value; } }
         [JsonIgnore]
         public new string Code { get => TransformReferences() + "\r\n" + HEADERCODE + "\r\n" + base.Code + "\r\n" + BOTTOMCODE; }
 
@@ -56,7 +56,7 @@ namespace BotOfScreenShots_Application
                 GenerateExecutable = false,
                 CompilerOptions = "/optimize"
             };
-            _isBuilded = false;
+            CreateCodeOnFlyWorker();
         }
 
         public ProfileCompiler(bool isFileToCreate) : base(isFileToCreate)
@@ -73,48 +73,64 @@ namespace BotOfScreenShots_Application
             {
                 _references.Add(refference);
             }
-            _isBuilded = false;
+            CreateCodeOnFlyWorker();
         }
 
         #endregion
+
+        /// <summary>
+        /// Overwrites thread responsible for CodeOnFly
+        /// </summary>
+        private void CreateCodeOnFlyWorker()
+        {
+            _codeOnFlyWorker = new Thread(new ThreadStart(CodeOnFly))
+            {
+                IsBackground = true
+            };
+        }
+
+        private void CodeOnFly()
+        {
+            try
+            {
+                MethodInfo methodInfo = _compilerResult.CompiledAssembly.GetModules()[0].GetType(NAMESPACE + "." + MAINCLASS).GetMethod("Main");
+                if (methodInfo == null)
+                    throw new Exception("Nie znaleziono metody \"Main\" jako punktu wejścia.");
+                methodInfo.Invoke(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Build code by C# compiler
         /// </summary>
         public void Build()
         {
-            if (!_isBuilded)
-            {
-                _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
-                CSharpCodeProvider provider = new CSharpCodeProvider();
-                _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
+            _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
 
-                if (_compilerResult.Errors.HasErrors)
-                    MessageBox.Show(_compilerResult.Errors.ToString());
-                _isBuilded = true;
-            }
+            if (_compilerResult.Errors.HasErrors)
+                MessageBox.Show(_compilerResult.Errors.ToString());
         }
 
         /// <summary>
         /// Runs code and trigger Build method if it is necessary
         /// </summary>
-        public void Run()
+        public void Run(bool startCode)
         {
-            Build();
-
-            if (_isBuilded)
-            { 
-                try
-                {
-                    MethodInfo methodInfo = _compilerResult.CompiledAssembly.GetModules()[0].GetType(NAMESPACE + "." + MAINCLASS).GetMethod("Main");
-                    if (methodInfo == null)
-                        throw new Exception("Nie znaleziono metody \"Main\" jako punktu wejścia.");
-                    methodInfo.Invoke(null, null);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+            if (startCode)
+            {
+                Build();
+                _codeOnFlyWorker.Start();
+            }
+            else
+            {
+                _codeOnFlyWorker.Abort();
+                CreateCodeOnFlyWorker();
             }
         }
 
@@ -127,7 +143,12 @@ namespace BotOfScreenShots_Application
             StringBuilder resultReferences = new StringBuilder();
 
             foreach (string reference in _references)
-                resultReferences.AppendLine($"using {reference.Remove(reference.Length - 4)};");
+            {
+                if (!reference.Contains(".dll"))
+                    MessageBox.Show("Incorrect library " + reference);
+                else
+                    resultReferences.AppendLine($"using {reference.Remove(reference.Length - 4)};");
+            }
 
             return resultReferences.ToString(); ;
         }
