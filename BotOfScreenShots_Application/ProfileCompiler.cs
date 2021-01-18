@@ -105,7 +105,7 @@ namespace BotOfScreenShots_Application
         }
 
         /// <summary>
-        /// Build code by C# compiler
+        /// Builds code by C# compiler
         /// </summary>
         public void Build()
         {
@@ -125,12 +125,12 @@ namespace BotOfScreenShots_Application
             if (startCode)
             {
                 Build();
+                CreateCodeOnFlyWorker();
                 _codeOnFlyWorker.Start();
             }
             else
             {
                 _codeOnFlyWorker.Abort();
-                CreateCodeOnFlyWorker();
             }
         }
 
