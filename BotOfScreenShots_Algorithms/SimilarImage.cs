@@ -19,35 +19,15 @@ namespace BotOfScreenShots_Algorithms
 
         public SimilarImage(Rectangle WorkArea) : base(WorkArea) 
         {
-            _similarityPercent = 75;
+            _similarityPercent = 50;
         }
-
-        private Bitmap MakeGrayscale(Bitmap Bitmap)
-        {
-            Bitmap result = new Bitmap(Bitmap.Width, Bitmap.Height);
-
-            for (int x = 0; x < Bitmap.Width; x++)
-            {
-                for (int y = 0; y < Bitmap.Height; y++)
-                {
-                    Color BitmapColor = Bitmap.GetPixel(x, y);
-                    int grayScale = (int)((BitmapColor.R * 0.3) + (BitmapColor.G * 0.59) + (BitmapColor.B * 0.11));
-                    Color myColor = Color.FromArgb(grayScale, grayScale, grayScale);
-                    result.SetPixel(x, y, myColor);
-                }
-            }
-            return result;
-        }//TO CHANGE!!!@@@
 
         public override Point? Find(Bitmap searchBitmap)
         {
             base.Find(searchBitmap);
 
-            Bitmap grayMainBitmap = MakeGrayscale(MainBitmap);
-            Bitmap graySearchBitmap = MakeGrayscale(MainBitmap);
-
-            int[][] mainImageArray = GetPixelArray(grayMainBitmap);
-            int[][] searchImageArray = GetPixelArray(graySearchBitmap);
+            int[][] mainImageArray = GetPixelArray(MainBitmap);
+            int[][] searchImageArray = GetPixelArray(searchBitmap);
 
             for (int yMain = 0, yLength = mainImageArray.Length - searchImageArray.Length + 1; yMain < yLength; yMain++)
             {
@@ -78,11 +58,8 @@ namespace BotOfScreenShots_Algorithms
         {
             base.Find(searchBitmap, newMainBitmap);
 
-            Bitmap grayMainBitmap = MakeGrayscale(MainBitmap);
-            Bitmap graySearchBitmap = MakeGrayscale(MainBitmap);
-
-            int[][] mainImageArray = GetPixelArray(grayMainBitmap);
-            int[][] searchImageArray = GetPixelArray(graySearchBitmap);
+            int[][] mainImageArray = GetPixelArray(MainBitmap);
+            int[][] searchImageArray = GetPixelArray(searchBitmap);
 
             for (int yMain = 0, yLength = mainImageArray.Length - searchImageArray.Length + 1; yMain < yLength; yMain++)
             {

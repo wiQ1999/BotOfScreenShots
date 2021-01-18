@@ -52,7 +52,7 @@ namespace BotOfScreenShots_Algorithms
             var result = new int[bitmap.Height][];
             var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
 
-            for (int y = 0; y < bitmap.Height; ++y)
+            for (int y = 0; y < bitmap.Height; y++)
             {
                 result[y] = new int[bitmap.Width];
                 Marshal.Copy(bitmapData.Scan0 + y * bitmapData.Stride, result[y], 0, result[y].Length);
