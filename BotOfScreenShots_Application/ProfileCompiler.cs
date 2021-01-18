@@ -28,15 +28,15 @@ namespace BotOfScreenShots_Application
             "}\r\n" + 
             "}";
 
-        private Thread _codeOnFlyWorker;
-
         private readonly IList<string> _startignRefferences = new ReadOnlyCollection<string>(new[]
         {
             "System.dll",
-            "System.Windows.Forms.dll"
+            "System.Threading.dll",
+            "System.Windows.Forms.dll",
+            "BotOfScreenShots_Algorithms.dll"
         });
         private readonly CompilerParameters _compilerParams;
-
+        private Thread _codeOnFlyWorker;
         private CompilerResults _compilerResult;
         private List<string> _references;
 
@@ -88,7 +88,7 @@ namespace BotOfScreenShots_Application
         }
 
         /// <summary>
-        /// 
+        /// Delegate method uses to run C# code and catch exceptions
         /// </summary>
         private void CodeOnFly()
         {
@@ -113,7 +113,7 @@ namespace BotOfScreenShots_Application
         /// <summary>
         /// Builds code by C# compiler
         /// </summary>
-        public bool Build()//DODAĆ LEPSZE WYŚWIETLANIE BŁĘDÓW i zmienić opis
+        public bool Build()
         {
             _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
             CSharpCodeProvider provider = new CSharpCodeProvider();
@@ -121,18 +121,20 @@ namespace BotOfScreenShots_Application
 
             if (_compilerResult.Errors.HasErrors)
             {
-                MessageBox.Show(_compilerResult.Errors.ToString());
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (CompilerError error in _compilerResult.Errors)
+                    stringBuilder.AppendLine(error.ErrorText);
+
+                MessageBox.Show(stringBuilder.ToString());
                 return false;
             }
-            else
-                return true;
-
+            return true;
         }
 
         /// <summary>
         /// Runs code and trigger Build method if it is necessary
         /// </summary>
-        public void Run()//do napisania
+        public void Run()
         {
             if (Build())
             {
@@ -142,7 +144,7 @@ namespace BotOfScreenShots_Application
         }
 
         /// <summary>
-        /// 
+        /// Deletes living worker
         /// </summary>
         public void Abort()
         {
