@@ -15,6 +15,8 @@ namespace BotOfScreenShots_Application
     {
         #region prop
 
+        public static bool IsCodeOnFlyCompleted;
+
         const string NAMESPACE = "BoSSCodeArea";
         const string MAINCLASS = "Program";
         const string HEADERCODE =
@@ -56,7 +58,6 @@ namespace BotOfScreenShots_Application
                 GenerateExecutable = false,
                 CompilerOptions = "/optimize"
             };
-            CreateCodeOnFlyWorker();
         }
 
         public ProfileCompiler(bool isFileToCreate) : base(isFileToCreate)
@@ -70,10 +71,7 @@ namespace BotOfScreenShots_Application
             };
             _references = new List<string>();
             foreach (string refference in _startignRefferences)
-            {
                 _references.Add(refference);
-            }
-            CreateCodeOnFlyWorker();
         }
 
         #endregion
@@ -89,8 +87,12 @@ namespace BotOfScreenShots_Application
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void CodeOnFly()
         {
+            IsCodeOnFlyCompleted = false;
             try
             {
                 MethodInfo methodInfo = _compilerResult.CompiledAssembly.GetModules()[0].GetType(NAMESPACE + "." + MAINCLASS).GetMethod("Main");
@@ -102,36 +104,50 @@ namespace BotOfScreenShots_Application
             {
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                IsCodeOnFlyCompleted = true;
+            }
         }
 
         /// <summary>
         /// Builds code by C# compiler
         /// </summary>
-        public void Build()
+        public bool Build()//DODAĆ LEPSZE WYŚWIETLANIE BŁĘDÓW i zmienić opis
         {
             _compilerParams.ReferencedAssemblies.AddRange(_references.ToArray());
             CSharpCodeProvider provider = new CSharpCodeProvider();
             _compilerResult = provider.CompileAssemblyFromSource(_compilerParams, Code);
 
             if (_compilerResult.Errors.HasErrors)
+            {
                 MessageBox.Show(_compilerResult.Errors.ToString());
+                return false;
+            }
+            else
+                return true;
+
         }
 
         /// <summary>
         /// Runs code and trigger Build method if it is necessary
         /// </summary>
-        public void Run(bool startCode)
+        public void Run()//do napisania
         {
-            if (startCode)
+            if (Build())
             {
-                Build();
                 CreateCodeOnFlyWorker();
                 _codeOnFlyWorker.Start();
             }
-            else
-            {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Abort()
+        {
+            if (_codeOnFlyWorker.IsAlive)
                 _codeOnFlyWorker.Abort();
-            }
         }
 
         /// <summary>

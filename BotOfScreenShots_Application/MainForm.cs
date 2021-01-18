@@ -58,7 +58,6 @@ namespace BotOfScreenShots_Application
             _startButton = true;
             InitializeComponent();
             CreatePreviewWorker();
-            CreateCodeOnFlyTimer();
             FillDataGridView();
             DeserializeData();
             EnableControls(true);
@@ -89,32 +88,6 @@ namespace BotOfScreenShots_Application
             ReferencesList.Columns.Add("Libraries", "Libraries");
             ReferencesList.Columns["Libraries"].Resizable = DataGridViewTriState.False;
             ReferencesList.Columns["Libraries"].Width = 120;
-        }
-
-        /// <summary>
-        /// Overwrites thread responsible for showing preview
-        /// </summary>
-        private void CreatePreviewWorker()
-        {
-            _previewWorker = new Thread(new ThreadStart(CaptureWorkArea))
-            {
-                IsBackground = true
-            };
-        }
-
-        private void CreateCodeOnFlyTimer()
-        {
-            _codeOnFlyTimer = new System.Timers.Timer(500)
-            {
-                AutoReset = true,
-                Enabled = true
-            };
-            _codeOnFlyTimer.Elapsed += _codeOnFlyTimer_ElapsedEvent;
-        }
-
-        private void _codeOnFlyTimer_ElapsedEvent(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            MessageBox.Show("TEST");
         }
 
         #region Serialization
@@ -292,6 +265,17 @@ namespace BotOfScreenShots_Application
         #region Preview
 
         /// <summary>
+        /// Overwrites thread responsible for showing preview
+        /// </summary>
+        private void CreatePreviewWorker()
+        {
+            _previewWorker = new Thread(new ThreadStart(CaptureWorkArea))
+            {
+                IsBackground = true
+            };
+        }
+
+        /// <summary>
         /// Analyzes controls on UI and prepares to display or shut down a new thread
         /// </summary>
         private void InitializePreview()
@@ -312,20 +296,7 @@ namespace BotOfScreenShots_Application
                 CreatePreviewWorker();
                 _previewWorker.Start();
             }
-        }
-
-        /// <summary>
-        /// Invokes new image into picturebox on UI by delegate method
-        /// </summary>
-        /// <param name="bitmap">Bitmap image</param>
-        private void UpdatePreview(Bitmap bitmap)
-        {
-            if (PreviewPictureBox.InvokeRequired)
-
-                PreviewPictureBox.Invoke(new UpdatePreviewDelegate(UpdatePreview), new object[] { bitmap });
-            else
-                PreviewPictureBox.Image = bitmap;
-        }
+        } 
 
         /// <summary>
         /// Get scale to image adapted to PreviePictureBox
@@ -357,6 +328,19 @@ namespace BotOfScreenShots_Application
                     UpdatePreview(new Bitmap(bitmap, new Size((int)(bitmap.Width * scale), (int)(bitmap.Height * scale))));
                 }
             }
+        }
+
+        /// <summary>
+        /// Invokes new image into picturebox on UI by delegate method
+        /// </summary>
+        /// <param name="bitmap">Bitmap image</param>
+        private void UpdatePreview(Bitmap bitmap)
+        {
+            if (PreviewPictureBox.InvokeRequired)
+
+                PreviewPictureBox.Invoke(new UpdatePreviewDelegate(UpdatePreview), new object[] { bitmap });
+            else
+                PreviewPictureBox.Image = bitmap;
         }
 
         private void WorkAreaButton_Click(object sender, EventArgs e)
@@ -395,6 +379,9 @@ namespace BotOfScreenShots_Application
 
         #region FilesList
 
+        /// <summary>
+        /// Refreshes list with profile files
+        /// </summary>
         private void RefreshFilesTreeView()
         {
             if (Directory.Exists(Profile.LocalPath))
@@ -432,9 +419,44 @@ namespace BotOfScreenShots_Application
 
         #region CodeArea
 
-        private void CodeArea_TextChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Overwrites timer reposible for listening for CodeOnFly stop
+        /// </summary>
+        private void CreateCodeOnFlyTimer()
         {
-            Profile.InitializeSave();
+            _codeOnFlyTimer = new System.Timers.Timer(1000)
+            {
+                AutoReset = true,
+                Enabled = true,
+            };
+            _codeOnFlyTimer.Elapsed += CodeOnFlyTimer_ElapsedEvent;
+        }
+
+        /// <summary>
+        /// Listens for a static property of ProfileCompiler
+        /// </summary>
+        /// <param name="sender">Object sender</param>
+        /// <param name="e">Timer event</param>
+        private void CodeOnFlyTimer_ElapsedEvent(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (ProfileCompiler.IsCodeOnFlyCompleted)
+            {
+                _startButton = true;
+                ChangePlayButton(Color.ForestGreen, "Play");
+                WindowState = FormWindowState.Normal;
+                _codeOnFlyTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Changes color and text of Play Button on UI
+        /// </summary>
+        /// <param name="buttonColor">New color button</param>
+        /// <param name="buttonText">New text button</param>
+        private void ChangePlayButton(Color buttonColor, string buttonText)
+        {
+            PlayButton.BackColor = buttonColor;
+            PlayButton.Text = buttonText;
         }
 
         private void BuildButton_Click(object sender, EventArgs e)
@@ -445,22 +467,28 @@ namespace BotOfScreenShots_Application
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            Save();
             if (_startButton)
             {
-                ProfileCompiler.Run(_startButton);
+                WindowState = FormWindowState.Minimized;
+                ProfileCompiler.Run();
                 _startButton = false;
+                ChangePlayButton(Color.Firebrick, "Stop");
+                CreateCodeOnFlyTimer();
             }
             else
             {
-                ProfileCompiler.Run(_startButton);
+                WindowState = FormWindowState.Normal;
+                ProfileCompiler.Abort();
                 _startButton = true;
+                ChangePlayButton(Color.ForestGreen, "Play");
             }
-            Save();
-            //Hide();
-            //ProfileCompiler.Run();
-            //Show();
         }
 
+        private void CodeArea_TextChanged(object sender, EventArgs e)
+        {
+            Profile.InitializeSave();
+        }
 
         #endregion
 
@@ -470,7 +498,6 @@ namespace BotOfScreenShots_Application
         {
             Profile.InitializeSave();
         }
-
 
         #endregion
 
