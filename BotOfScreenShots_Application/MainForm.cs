@@ -14,10 +14,14 @@ namespace BotOfScreenShots_Application
     {
         #region Prop
 
+        //Preview Worker
         private Thread _previewWorker;
         private delegate void UpdatePreviewDelegate(Bitmap bitmap);
 
-        private readonly ISerializer _jsonSerializer = new JSONSerializer();
+        //Timer CodeOnFly
+        private System.Timers.Timer _codeOnFlyTimer;
+
+        private readonly ISerializer _jsonSerializer;
         private List<ProfileCompiler> _profilesList;
         private int _profilesListTempIndex;
         private Rectangle _workArea;
@@ -48,10 +52,13 @@ namespace BotOfScreenShots_Application
 
         public MainForm()
         {
+            
+            _jsonSerializer = new JSONSerializer();
             _workArea = Rectangle.Empty;
             _startButton = true;
             InitializeComponent();
             CreatePreviewWorker();
+            CreateCodeOnFlyTimer();
             FillDataGridView();
             DeserializeData();
             EnableControls(true);
@@ -93,6 +100,21 @@ namespace BotOfScreenShots_Application
             {
                 IsBackground = true
             };
+        }
+
+        private void CreateCodeOnFlyTimer()
+        {
+            _codeOnFlyTimer = new System.Timers.Timer(500)
+            {
+                AutoReset = true,
+                Enabled = true
+            };
+            _codeOnFlyTimer.Elapsed += _codeOnFlyTimer_ElapsedEvent;
+        }
+
+        private void _codeOnFlyTimer_ElapsedEvent(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            MessageBox.Show("TEST");
         }
 
         #region Serialization
