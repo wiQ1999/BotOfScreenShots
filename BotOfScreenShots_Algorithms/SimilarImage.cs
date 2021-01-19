@@ -17,7 +17,7 @@ namespace BotOfScreenShots_Algorithms
             }
         }
 
-        public SimilarImage(Rectangle WorkArea) : base(WorkArea) 
+        public SimilarImage(int x, int y, int width, int height) : base(x, y, width, height)
         {
             _similarityPercent = 50;
         }

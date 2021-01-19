@@ -1,10 +1,12 @@
-﻿using BotOfScreenShots_Application.Interfaces;
+﻿using BotOfScreenShots_Algorithms;
+using BotOfScreenShots_Application.Interfaces;
 using BotOfScreenShots_Application.Selector;
 using BotOfScreenShots_Application.Serilizer;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -13,6 +15,9 @@ namespace BotOfScreenShots_Application
     public partial class MainForm : Form
     {
         #region Prop
+
+        //Main work area
+        public static Rectangle WorkArea;
 
         //Preview Worker
         private Thread _previewWorker;
@@ -24,7 +29,6 @@ namespace BotOfScreenShots_Application
         private readonly ISerializer _jsonSerializer;
         private List<ProfileCompiler> _profilesList;
         private int _profilesListTempIndex;
-        private Rectangle _workArea;
         private bool _startButton;
         
         /// <summary>
@@ -52,9 +56,8 @@ namespace BotOfScreenShots_Application
 
         public MainForm()
         {
-            
             _jsonSerializer = new JSONSerializer();
-            _workArea = Rectangle.Empty;
+            WorkArea = Rectangle.Empty;
             _startButton = true;
             InitializeComponent();
             CreatePreviewWorker();
@@ -98,7 +101,7 @@ namespace BotOfScreenShots_Application
         private void Save()
         {
             Profile.Code = CodeArea.Text;
-            Profile.WorkArea = _workArea;
+            Profile.WorkArea = WorkArea;
             Profile.IsPreview = PreviewCheckBox.Checked;
             ProfileCompiler.References.Clear();
             foreach (DataGridViewRow row in ReferencesList.Rows)
@@ -229,7 +232,7 @@ namespace BotOfScreenShots_Application
         private void ProfilesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshFilesTreeView();
-            _workArea = Profile.WorkArea;
+            WorkArea = Profile.WorkArea;
             ReferencesList.Rows.Clear();
             foreach (string references in ProfileCompiler.References)
                 ReferencesList.Rows.Add(references);
@@ -314,15 +317,15 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void CaptureWorkArea()
         {
-            float scale = GetScaleToPreview(_workArea.Width, _workArea.Height);
-            using (Bitmap bitmap = new Bitmap(_workArea.Width, _workArea.Height))
+            float scale = GetScaleToPreview(WorkArea.Width, WorkArea.Height);
+            using (Bitmap bitmap = new Bitmap(WorkArea.Width, WorkArea.Height))
             {
                 while (true)
                 {
                     Thread.Sleep(100);
                     using (Graphics graphics = Graphics.FromImage(bitmap))
                     {
-                        graphics.CopyFromScreen(_workArea.Location, Point.Empty, _workArea.Size);
+                        graphics.CopyFromScreen(WorkArea.Location, Point.Empty, WorkArea.Size);
                     }
 
                     UpdatePreview(new Bitmap(bitmap, new Size((int)(bitmap.Width * scale), (int)(bitmap.Height * scale))));
@@ -349,7 +352,7 @@ namespace BotOfScreenShots_Application
             SelectorArea selector = new SelectorArea(Brushes.ForestGreen);
             selector.ShowDialog();
             if (selector.Area != Rectangle.Empty)
-                _workArea = selector.Area;
+                WorkArea = selector.Area;
             selector.Close();
             InitializePreview();
         }
@@ -470,16 +473,17 @@ namespace BotOfScreenShots_Application
             Save();
             if (_startButton)
             {
-                WindowState = FormWindowState.Minimized;
-                ProfileCompiler.Run();
-                _startButton = false;
-                ChangePlayButton(Color.Firebrick, "Stop");
-                CreateCodeOnFlyTimer();
+                if (ProfileCompiler.Run()){
+                    WindowState = FormWindowState.Minimized;
+                    _startButton = false;
+                    ChangePlayButton(Color.Firebrick, "Stop");
+                    CreateCodeOnFlyTimer();
+                }
             }
             else
             {
-                WindowState = FormWindowState.Normal;
                 ProfileCompiler.Abort();
+                WindowState = FormWindowState.Normal;
                 _startButton = true;
                 ChangePlayButton(Color.ForestGreen, "Play");
             }
@@ -501,6 +505,18 @@ namespace BotOfScreenShots_Application
 
         #endregion
 
-        
+        #region Links
+
+        private void AlgorithmsLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/wiQ1999/ImageSearchAlgorithm/blob/master/Analiza-Przeszukiwanie_obrazu.pdf");
+        }
+
+        private void ProjectLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/wiQ1999/BotOfScreenShots");
+        }
+
+        #endregion
     }
 }

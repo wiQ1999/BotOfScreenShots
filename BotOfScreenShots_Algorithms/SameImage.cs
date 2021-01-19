@@ -4,7 +4,7 @@ namespace BotOfScreenShots_Algorithms
 {
     public class SameImage : ASearchImage
     {
-        public SameImage(Rectangle WorkArea) : base(WorkArea) { }
+        public SameImage(int x, int y, int width, int height) : base(x, y, width, height) { }
 
         public override Point? Find(Bitmap searchBitmap)
         {

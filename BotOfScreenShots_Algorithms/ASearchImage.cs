@@ -13,9 +13,9 @@ namespace BotOfScreenShots_Algorithms
         public Rectangle WorkArea { get => _workArea; }
         public Bitmap MainBitmap { get => _mainBitmap; private set => _mainBitmap = value; }
 
-        public ASearchImage(Rectangle WorkArea)
+        public ASearchImage(int x, int y, int width, int height)
         {
-            _workArea = WorkArea;
+            _workArea = new Rectangle(x, y, width, height);
             //_MainBitmap = TakeScreenShot(WorkArea);
         }
 
@@ -50,7 +50,7 @@ namespace BotOfScreenShots_Algorithms
         protected int[][] GetPixelArray(Bitmap bitmap)
         {
             var result = new int[bitmap.Height][];
-            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             for (int y = 0; y < bitmap.Height; y++)
             {

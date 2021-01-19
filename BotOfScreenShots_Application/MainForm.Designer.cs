@@ -29,9 +29,9 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ProfilesList = new System.Windows.Forms.ComboBox();
             this.FilesTreeView = new System.Windows.Forms.TreeView();
             this.ProfileAddButton = new System.Windows.Forms.Button();
@@ -49,6 +49,8 @@ namespace BotOfScreenShots_Application
             this.OpenDirectoryButton = new System.Windows.Forms.Button();
             this.ReferencesList = new System.Windows.Forms.DataGridView();
             this.BackgroundPanel = new System.Windows.Forms.Panel();
+            this.ProjectLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.AlgorithmsLinkLabel = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).BeginInit();
             this.BackgroundPanel.SuspendLayout();
@@ -132,7 +134,8 @@ namespace BotOfScreenShots_Application
             this.PlayButton.BackColor = System.Drawing.Color.ForestGreen;
             this.PlayButton.Enabled = false;
             this.PlayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.PlayButton.Location = new System.Drawing.Point(248, 3);
+            this.PlayButton.ForeColor = System.Drawing.Color.White;
+            this.PlayButton.Location = new System.Drawing.Point(297, 3);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(147, 23);
             this.PlayButton.TabIndex = 10;
@@ -151,14 +154,15 @@ namespace BotOfScreenShots_Application
             this.CodeArea.Location = new System.Drawing.Point(3, 27);
             this.CodeArea.Multiline = true;
             this.CodeArea.Name = "CodeArea";
-            this.CodeArea.Size = new System.Drawing.Size(495, 557);
+            this.CodeArea.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.CodeArea.Size = new System.Drawing.Size(591, 540);
             this.CodeArea.TabIndex = 11;
             this.CodeArea.TextChanged += new System.EventHandler(this.CodeArea_TextChanged);
             // 
             // BuildButton
             // 
             this.BuildButton.Enabled = false;
-            this.BuildButton.Location = new System.Drawing.Point(167, 3);
+            this.BuildButton.Location = new System.Drawing.Point(216, 3);
             this.BuildButton.Name = "BuildButton";
             this.BuildButton.Size = new System.Drawing.Size(75, 23);
             this.BuildButton.TabIndex = 12;
@@ -178,7 +182,7 @@ namespace BotOfScreenShots_Application
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(34, 3);
+            this.SaveButton.Location = new System.Drawing.Point(110, 3);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 15;
@@ -223,36 +227,36 @@ namespace BotOfScreenShots_Application
             this.ReferencesList.AllowUserToResizeRows = false;
             this.ReferencesList.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.ReferencesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ReferencesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReferencesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.ReferencesList.ColumnHeadersHeight = 21;
             this.ReferencesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ReferencesList.DefaultCellStyle = dataGridViewCellStyle5;
-            this.ReferencesList.Location = new System.Drawing.Point(822, 12);
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ReferencesList.DefaultCellStyle = dataGridViewCellStyle11;
+            this.ReferencesList.Location = new System.Drawing.Point(922, 12);
             this.ReferencesList.MultiSelect = false;
             this.ReferencesList.Name = "ReferencesList";
             this.ReferencesList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ReferencesList.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReferencesList.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.ReferencesList.RowHeadersWidth = 25;
             this.ReferencesList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.ReferencesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -263,20 +267,44 @@ namespace BotOfScreenShots_Application
             // BackgroundPanel
             // 
             this.BackgroundPanel.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.BackgroundPanel.Controls.Add(this.AlgorithmsLinkLabel);
+            this.BackgroundPanel.Controls.Add(this.ProjectLinkLabel);
             this.BackgroundPanel.Controls.Add(this.CodeArea);
             this.BackgroundPanel.Controls.Add(this.SaveButton);
             this.BackgroundPanel.Controls.Add(this.BuildButton);
             this.BackgroundPanel.Controls.Add(this.PlayButton);
             this.BackgroundPanel.Location = new System.Drawing.Point(318, 12);
             this.BackgroundPanel.Name = "BackgroundPanel";
-            this.BackgroundPanel.Size = new System.Drawing.Size(502, 587);
+            this.BackgroundPanel.Size = new System.Drawing.Size(598, 587);
             this.BackgroundPanel.TabIndex = 21;
+            // 
+            // ProjectLinkLabel
+            // 
+            this.ProjectLinkLabel.AutoSize = true;
+            this.ProjectLinkLabel.Location = new System.Drawing.Point(3, 570);
+            this.ProjectLinkLabel.Name = "ProjectLinkLabel";
+            this.ProjectLinkLabel.Size = new System.Drawing.Size(76, 13);
+            this.ProjectLinkLabel.TabIndex = 17;
+            this.ProjectLinkLabel.TabStop = true;
+            this.ProjectLinkLabel.Text = "GitHub Project";
+            this.ProjectLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectLinkLabel_LinkClicked);
+            // 
+            // AlgorithmsLinkLabel
+            // 
+            this.AlgorithmsLinkLabel.AutoSize = true;
+            this.AlgorithmsLinkLabel.Location = new System.Drawing.Point(85, 570);
+            this.AlgorithmsLinkLabel.Name = "AlgorithmsLinkLabel";
+            this.AlgorithmsLinkLabel.Size = new System.Drawing.Size(99, 13);
+            this.AlgorithmsLinkLabel.TabIndex = 18;
+            this.AlgorithmsLinkLabel.TabStop = true;
+            this.AlgorithmsLinkLabel.Text = "Algorithms research";
+            this.AlgorithmsLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AlgorithmsLinkLabel_LinkClicked);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 611);
+            this.ClientSize = new System.Drawing.Size(1084, 611);
             this.Controls.Add(this.BackgroundPanel);
             this.Controls.Add(this.ReferencesList);
             this.Controls.Add(this.OpenDirectoryButton);
@@ -290,6 +318,7 @@ namespace BotOfScreenShots_Application
             this.Controls.Add(this.ProfileAddButton);
             this.Controls.Add(this.FilesTreeView);
             this.Controls.Add(this.ProfilesList);
+            this.ForeColor = System.Drawing.Color.Black;
             this.MinimumSize = new System.Drawing.Size(900, 599);
             this.Name = "MainForm";
             this.Text = "BotOfScreenShots";
@@ -322,6 +351,8 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.Button OpenDirectoryButton;
         private System.Windows.Forms.DataGridView ReferencesList;
         private System.Windows.Forms.Panel BackgroundPanel;
+        private System.Windows.Forms.LinkLabel AlgorithmsLinkLabel;
+        private System.Windows.Forms.LinkLabel ProjectLinkLabel;
     }
 }
 

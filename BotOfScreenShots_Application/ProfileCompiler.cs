@@ -4,6 +4,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -42,7 +43,7 @@ namespace BotOfScreenShots_Application
 
         public List<string> References { get => _references; set => _references = value; }
         [JsonIgnore]
-        public new string Code { get => TransformReferences() + "\r\n" + HEADERCODE + "\r\n" + base.Code + "\r\n" + BOTTOMCODE; }
+        public new string Code { get => TransformReferences() + "\r\n" + HEADERCODE + GetCodeProperties() + base.Code + "\r\n" + BOTTOMCODE; }
 
         #endregion
 
@@ -107,6 +108,7 @@ namespace BotOfScreenShots_Application
             finally
             {
                 IsCodeOnFlyCompleted = true;
+                Abort();
             }
         }
 
@@ -134,13 +136,15 @@ namespace BotOfScreenShots_Application
         /// <summary>
         /// Runs code and trigger Build method if it is necessary
         /// </summary>
-        public void Run()
+        public bool Run()
         {
             if (Build())
             {
                 CreateCodeOnFlyWorker();
                 _codeOnFlyWorker.Start();
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -169,6 +173,17 @@ namespace BotOfScreenShots_Application
             }
 
             return resultReferences.ToString(); ;
+        }
+
+        /// <summary>
+        /// Create and get properties of algorithms
+        /// </summary>
+        /// <returns>Code properties</returns>
+        private string GetCodeProperties()
+        {
+            return $"public static SameImage SameImage = new SameImage({MainForm.WorkArea.X}, {MainForm.WorkArea.Y}, {MainForm.WorkArea.Width}, {MainForm.WorkArea.Height});\r\n" +
+                $"public static SimilarImage SimilarImage = new SimilarImage({MainForm.WorkArea.X}, {MainForm.WorkArea.Y}, {MainForm.WorkArea.Width}, {MainForm.WorkArea.Height});\r\n" +
+                $"public static string Path = @\"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{LocalPath.Remove(0, 1)}\\\";\r\n";
         }
     }
 }

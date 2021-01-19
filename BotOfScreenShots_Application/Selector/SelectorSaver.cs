@@ -21,7 +21,6 @@ namespace BotOfScreenShots_Application.Selector
             base.SaveArea();
 
             Visible = false;
-
             _bitmapToSave = ASearchImage.TakeScreenShot(Area);
             _viewer = new SelectorViewer(_bitmapToSave);
 
@@ -50,7 +49,7 @@ namespace BotOfScreenShots_Application.Selector
             int width = bitmapToShow.Width;
             int height = bitmapToShow.Height;
             Bitmap view = bitmapToShow;
-
+            
             //resize
             if (width > 800 || height > 800)
             {
