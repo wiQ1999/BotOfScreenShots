@@ -25,6 +25,7 @@ namespace BotOfScreenShots_Application
             "{\r\n" +
             "static class " + MAINCLASS + "\r\n" +
             "{\r\n";
+
         const string BOTTOMCODE =
             "}\r\n" + 
             "}";
@@ -32,9 +33,11 @@ namespace BotOfScreenShots_Application
         private readonly IList<string> _startignRefferences = new ReadOnlyCollection<string>(new[]
         {
             "System.dll",
+            "System.Drawing.dll",
             "System.Threading.dll",
             "System.Windows.Forms.dll",
-            "BotOfScreenShots_Algorithms.dll"
+            "BotOfScreenShots_Algorithms.dll",
+            "System.Runtime.InteropServices.dll"
         });
         private readonly CompilerParameters _compilerParams;
         private Thread _codeOnFlyWorker;
@@ -183,7 +186,8 @@ namespace BotOfScreenShots_Application
         {
             return $"public static SameImage SameImage = new SameImage({MainForm.WorkArea.X}, {MainForm.WorkArea.Y}, {MainForm.WorkArea.Width}, {MainForm.WorkArea.Height});\r\n" +
                 $"public static SimilarImage SimilarImage = new SimilarImage({MainForm.WorkArea.X}, {MainForm.WorkArea.Y}, {MainForm.WorkArea.Width}, {MainForm.WorkArea.Height});\r\n" +
-                $"public static string Path = @\"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{LocalPath.Remove(0, 1)}\\\";\r\n";
+                $"public static string Path = @\"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{LocalPath.Remove(0, 1)}\\\";\r\n" +
+                "private const UInt32 MOUSEEVENTF_LEFTDOWN = 0x0002;\r\nprivate const UInt32 MOUSEEVENTF_LEFTUP = 0x0004;\r\n[DllImport(\"user32.dll\", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]\r\npublic static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);\r\npublic static void MouseClick()\r\n{\r\nuint X = (uint)System.Windows.Forms.Cursor.Position.X;\r\nuint Y = (uint)System.Windows.Forms.Cursor.Position.Y;\r\nmouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);\r\n}\r\n";
         }
     }
 }

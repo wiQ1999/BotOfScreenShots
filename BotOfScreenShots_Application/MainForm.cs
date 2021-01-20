@@ -84,6 +84,18 @@ namespace BotOfScreenShots_Application
         }
 
         /// <summary>
+        /// changes the availability of profiles list controls on the MainForm
+        /// </summary>
+        /// <param name="isEnable">true or false</param>
+        private void EnableListControls(bool isEnable)
+        {
+            ProfilesList.Enabled = isEnable;
+            ProfileChangeNameButton.Enabled = isEnable;
+            ProfileAddButton.Enabled = isEnable;
+            ProfileRemoveButton.Enabled = isEnable;
+        }
+
+        /// <summary>
         /// Fill and specify references list parameters
         /// </summary>
         private void FillDataGridView()
@@ -448,6 +460,8 @@ namespace BotOfScreenShots_Application
                 {
                     _startButton = true;
                     ChangePlayButton(Color.ForestGreen, "Play");
+                    EnableControls(true);
+                    EnableListControls(true);
                 });
                 _codeOnFlyTimer.Stop();
             }
@@ -479,6 +493,9 @@ namespace BotOfScreenShots_Application
                     WindowState = FormWindowState.Minimized;
                     _startButton = false;
                     ChangePlayButton(Color.Firebrick, "Stop");
+                    EnableControls(false);
+                    PlayButton.Enabled = true;
+                    EnableListControls(false);
                     CreateCodeOnFlyTimer();
                 }
             }
@@ -488,6 +505,8 @@ namespace BotOfScreenShots_Application
                 WindowState = FormWindowState.Normal;
                 _startButton = true;
                 ChangePlayButton(Color.ForestGreen, "Play");
+                EnableControls(true);
+                EnableListControls(true);
             }
         }
 

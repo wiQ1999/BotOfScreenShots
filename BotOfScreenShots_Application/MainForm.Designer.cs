@@ -29,9 +29,9 @@ namespace BotOfScreenShots_Application
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ProfilesList = new System.Windows.Forms.ComboBox();
             this.FilesTreeView = new System.Windows.Forms.TreeView();
             this.ProfileAddButton = new System.Windows.Forms.Button();
@@ -52,11 +52,11 @@ namespace BotOfScreenShots_Application
             this.AlgorithmsLinkLabel = new System.Windows.Forms.LinkLabel();
             this.ProjectLinkLabel = new System.Windows.Forms.LinkLabel();
             this.GlobalPropertiesLabel = new System.Windows.Forms.Label();
-            this.SameImageInfoLabel = new System.Windows.Forms.Label();
-            this.SimilarImageInfoLabel = new System.Windows.Forms.Label();
             this.SameImageProp1Label = new System.Windows.Forms.Label();
             this.SimilarImageProp1Label = new System.Windows.Forms.Label();
             this.SimilarImageProp2Label = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReferencesList)).BeginInit();
             this.BackgroundPanel.SuspendLayout();
@@ -234,40 +234,40 @@ namespace BotOfScreenShots_Application
             this.ReferencesList.AllowUserToResizeRows = false;
             this.ReferencesList.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.ReferencesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ReferencesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReferencesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.ReferencesList.ColumnHeadersHeight = 21;
             this.ReferencesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ReferencesList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ReferencesList.DefaultCellStyle = dataGridViewCellStyle5;
             this.ReferencesList.Location = new System.Drawing.Point(922, 12);
             this.ReferencesList.MultiSelect = false;
             this.ReferencesList.Name = "ReferencesList";
             this.ReferencesList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ReferencesList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReferencesList.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.ReferencesList.RowHeadersWidth = 25;
             this.ReferencesList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.ReferencesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ReferencesList.Size = new System.Drawing.Size(200, 466);
+            this.ReferencesList.Size = new System.Drawing.Size(200, 430);
             this.ReferencesList.TabIndex = 20;
             this.ReferencesList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.ReferencesList_CellValueChanged);
             // 
@@ -311,47 +311,27 @@ namespace BotOfScreenShots_Application
             // 
             this.GlobalPropertiesLabel.AutoSize = true;
             this.GlobalPropertiesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.GlobalPropertiesLabel.Location = new System.Drawing.Point(975, 481);
+            this.GlobalPropertiesLabel.Location = new System.Drawing.Point(975, 445);
             this.GlobalPropertiesLabel.Name = "GlobalPropertiesLabel";
             this.GlobalPropertiesLabel.Size = new System.Drawing.Size(147, 20);
             this.GlobalPropertiesLabel.TabIndex = 22;
             this.GlobalPropertiesLabel.Text = "Global properties";
             // 
-            // SameImageInfoLabel
-            // 
-            this.SameImageInfoLabel.AutoSize = true;
-            this.SameImageInfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SameImageInfoLabel.Location = new System.Drawing.Point(1018, 530);
-            this.SameImageInfoLabel.Name = "SameImageInfoLabel";
-            this.SameImageInfoLabel.Size = new System.Drawing.Size(104, 13);
-            this.SameImageInfoLabel.TabIndex = 23;
-            this.SameImageInfoLabel.Text = "Find the same image";
-            // 
-            // SimilarImageInfoLabel
-            // 
-            this.SimilarImageInfoLabel.AutoSize = true;
-            this.SimilarImageInfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SimilarImageInfoLabel.Location = new System.Drawing.Point(916, 589);
-            this.SimilarImageInfoLabel.Name = "SimilarImageInfoLabel";
-            this.SimilarImageInfoLabel.Size = new System.Drawing.Size(206, 13);
-            this.SimilarImageInfoLabel.TabIndex = 24;
-            this.SimilarImageInfoLabel.Text = "Set similarity percent and find similar image";
-            // 
             // SameImageProp1Label
             // 
             this.SameImageProp1Label.AutoSize = true;
             this.SameImageProp1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SameImageProp1Label.Location = new System.Drawing.Point(942, 514);
+            this.SameImageProp1Label.Location = new System.Drawing.Point(924, 556);
             this.SameImageProp1Label.Name = "SameImageProp1Label";
-            this.SameImageProp1Label.Size = new System.Drawing.Size(180, 16);
+            this.SameImageProp1Label.Size = new System.Drawing.Size(209, 16);
             this.SameImageProp1Label.TabIndex = 25;
-            this.SameImageProp1Label.Text = "SameImage(Bitmap toFinde)";
+            this.SameImageProp1Label.Text = "SameImage.Find(Bitmap toFinde)";
             // 
             // SimilarImageProp1Label
             // 
             this.SimilarImageProp1Label.AutoSize = true;
             this.SimilarImageProp1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SimilarImageProp1Label.Location = new System.Drawing.Point(932, 556);
+            this.SimilarImageProp1Label.Location = new System.Drawing.Point(943, 504);
             this.SimilarImageProp1Label.Name = "SimilarImageProp1Label";
             this.SimilarImageProp1Label.Size = new System.Drawing.Size(190, 16);
             this.SimilarImageProp1Label.TabIndex = 26;
@@ -361,22 +341,42 @@ namespace BotOfScreenShots_Application
             // 
             this.SimilarImageProp2Label.AutoSize = true;
             this.SimilarImageProp2Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SimilarImageProp2Label.Location = new System.Drawing.Point(937, 573);
+            this.SimilarImageProp2Label.Location = new System.Drawing.Point(919, 578);
             this.SimilarImageProp2Label.Name = "SimilarImageProp2Label";
-            this.SimilarImageProp2Label.Size = new System.Drawing.Size(185, 16);
+            this.SimilarImageProp2Label.Size = new System.Drawing.Size(214, 16);
             this.SimilarImageProp2Label.TabIndex = 27;
-            this.SimilarImageProp2Label.Text = "SimilarImage(Bitmap toFinde)";
+            this.SimilarImageProp2Label.Text = "SimilarImage.Find(Bitmap toFinde)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(1047, 535);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 16);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "MouseClick()";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.Location = new System.Drawing.Point(1035, 485);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(98, 16);
+            this.label2.TabIndex = 29;
+            this.label2.Text = "Cursor.Position";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 611);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.SimilarImageProp2Label);
             this.Controls.Add(this.SimilarImageProp1Label);
             this.Controls.Add(this.SameImageProp1Label);
-            this.Controls.Add(this.SimilarImageInfoLabel);
-            this.Controls.Add(this.SameImageInfoLabel);
             this.Controls.Add(this.GlobalPropertiesLabel);
             this.Controls.Add(this.BackgroundPanel);
             this.Controls.Add(this.ReferencesList);
@@ -428,11 +428,11 @@ namespace BotOfScreenShots_Application
         private System.Windows.Forms.LinkLabel AlgorithmsLinkLabel;
         private System.Windows.Forms.LinkLabel ProjectLinkLabel;
         private System.Windows.Forms.Label GlobalPropertiesLabel;
-        private System.Windows.Forms.Label SameImageInfoLabel;
-        private System.Windows.Forms.Label SimilarImageInfoLabel;
         private System.Windows.Forms.Label SameImageProp1Label;
         private System.Windows.Forms.Label SimilarImageProp1Label;
         private System.Windows.Forms.Label SimilarImageProp2Label;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
