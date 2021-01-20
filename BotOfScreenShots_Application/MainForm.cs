@@ -539,5 +539,10 @@ namespace BotOfScreenShots_Application
         }
 
         #endregion
+
+        private void SimilarImageProp1Label_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

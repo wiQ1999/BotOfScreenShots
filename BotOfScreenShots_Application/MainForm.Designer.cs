@@ -321,11 +321,11 @@ namespace BotOfScreenShots_Application
             // 
             this.SameImageProp1Label.AutoSize = true;
             this.SameImageProp1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SameImageProp1Label.Location = new System.Drawing.Point(924, 556);
+            this.SameImageProp1Label.Location = new System.Drawing.Point(932, 556);
             this.SameImageProp1Label.Name = "SameImageProp1Label";
-            this.SameImageProp1Label.Size = new System.Drawing.Size(209, 16);
+            this.SameImageProp1Label.Size = new System.Drawing.Size(201, 16);
             this.SameImageProp1Label.TabIndex = 25;
-            this.SameImageProp1Label.Text = "SameImage.Find(Bitmap toFinde)";
+            this.SameImageProp1Label.Text = "SameImage.Find(Bitmap toFind)";
             // 
             // SimilarImageProp1Label
             // 
@@ -336,16 +336,17 @@ namespace BotOfScreenShots_Application
             this.SimilarImageProp1Label.Size = new System.Drawing.Size(190, 16);
             this.SimilarImageProp1Label.TabIndex = 26;
             this.SimilarImageProp1Label.Text = "SimilarImage.SimilarityPercent";
+            this.SimilarImageProp1Label.Click += new System.EventHandler(this.SimilarImageProp1Label_Click);
             // 
             // SimilarImageProp2Label
             // 
             this.SimilarImageProp2Label.AutoSize = true;
             this.SimilarImageProp2Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SimilarImageProp2Label.Location = new System.Drawing.Point(919, 578);
+            this.SimilarImageProp2Label.Location = new System.Drawing.Point(927, 578);
             this.SimilarImageProp2Label.Name = "SimilarImageProp2Label";
-            this.SimilarImageProp2Label.Size = new System.Drawing.Size(214, 16);
+            this.SimilarImageProp2Label.Size = new System.Drawing.Size(206, 16);
             this.SimilarImageProp2Label.TabIndex = 27;
-            this.SimilarImageProp2Label.Text = "SimilarImage.Find(Bitmap toFinde)";
+            this.SimilarImageProp2Label.Text = "SimilarImage.Find(Bitmap toFind)";
             // 
             // label1
             // 
