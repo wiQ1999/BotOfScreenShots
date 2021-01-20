@@ -16,10 +16,17 @@ W folderze z plikiem wykonywalnym '.exe' generowany jest plik z zapisami profili
 W aplikacji w obszarze kodowania obowiązuje nomenklatura języka C#, dostępne są również nastepujące właściwości oraz metody:
 
 *SimilarImage.SimilarityPercent*
-wartość procentowa (od 0 do 100) podobieństwa wyszukiwanego zdjęcia na obszarze roboczym
+
+- wartość procentowa (od 0 do 100) podobieństwa wyszukiwanego zdjęcia na obszarze roboczym
 
 *MouseClick()*
-metoda wywołująca event kliknięcia lewego przycisku myszy w punkcie, w którym się znajduje
+
+- metoda wywołująca event kliknięcia lewego przycisku myszy w punkcie, w którym się znajduje
 
 *SameImage.Find(Bitmap toFind)* oraz *SameImage.Find(Bitmap toFind, Rectangle newWorkArea)*
-metoda wyszukująca wskazanego zdjęcia w argumencie 'toFind'
+
+- metoda wyszukująca wskazanego zdjęcia w argumencie 'toFind' na obszarze roboczym, może zostać przeciążana ze wskazaniem nowego obszaru roboczego
+
+*SimilarImage.Find(Bitmap toFind)* oraz *SimilarImage.Find(Bitmap toFind, Rectangle newWorkArea)*
+
+- metoda wyszukująca wskazanego podobnego zdjęcia w argumencie 'toFind' na obszarze roboczym, przy czym stopień podobieństwa jest określony przez statyczną wartość *SimilarImage.SimilarityPercent*, może zostać przeciążana ze wskazaniem nowego obszaru roboczego
