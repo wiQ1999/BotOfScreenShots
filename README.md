@@ -30,3 +30,7 @@ W aplikacji w obszarze kodowania obowiązuje nomenklatura języka C#, dostępne 
 *SimilarImage.Find(Bitmap toFind)* oraz *SimilarImage.Find(Bitmap toFind, Rectangle newWorkArea)*
 
 - metoda wyszukująca wskazanego podobnego zdjęcia w argumencie 'toFind' na obszarze roboczym, przy czym stopień podobieństwa jest określony przez statyczną wartość *SimilarImage.SimilarityPercent*, może zostać przeciążana ze wskazaniem nowego obszaru roboczego
+
+#Algorytmy
+
+https://github.com/wiQ1999/ImageSearchAlgorithm/blob/master/Analiza-Przeszukiwanie_obrazu.pdf
