@@ -90,10 +90,14 @@ namespace BotOfScreenShots_Application
         /// <param name="newDirectoryName">New directory name</param>
         private void RenameDirectory(string newDirectoryName)
         {
-            if (Directory.Exists(LocalPath))
-                Directory.Move(LocalPath, FILESPATH + $"({_id}){newDirectoryName}");
-            else
-                Directory.CreateDirectory(FILESPATH + $"({_id}){newDirectoryName}");
+            string newFullDirectoryName = FILESPATH + $"({_id}){newDirectoryName}";
+            if (newFullDirectoryName != LocalPath)
+            {
+                if (Directory.Exists(LocalPath))
+                    Directory.Move(LocalPath, newFullDirectoryName);
+                else
+                    Directory.CreateDirectory(newFullDirectoryName);
+            }
         }
 
         /// <summary>

@@ -1,12 +1,10 @@
-﻿using BotOfScreenShots_Algorithms;
-using BotOfScreenShots_Application.Interfaces;
+﻿using BotOfScreenShots_Application.Interfaces;
 using BotOfScreenShots_Application.Selector;
 using BotOfScreenShots_Application.Serilizer;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -73,6 +71,8 @@ namespace BotOfScreenShots_Application
         private void EnableControls(bool isEnable)
         {
             FilesTreeView.Visible = isEnable;
+            RefreshFilesButton.Enabled = isEnable;
+            OpenDirectoryButton.Enabled = isEnable;
             WorkAreaButton.Enabled = isEnable;
             ScreenShotButton.Enabled = isEnable;
             PreviewCheckBox.Enabled = isEnable;
@@ -90,7 +90,7 @@ namespace BotOfScreenShots_Application
         {
             ReferencesList.Columns.Add("Libraries", "Libraries");
             ReferencesList.Columns["Libraries"].Resizable = DataGridViewTriState.False;
-            ReferencesList.Columns["Libraries"].Width = 120;
+            ReferencesList.Columns["Libraries"].Width = 170;
         }
 
         #region Serialization
@@ -444,9 +444,11 @@ namespace BotOfScreenShots_Application
         {
             if (ProfileCompiler.IsCodeOnFlyCompleted)
             {
-                _startButton = true;
-                ChangePlayButton(Color.ForestGreen, "Play");
-                WindowState = FormWindowState.Normal;
+                Invoke((MethodInvoker)delegate
+                {
+                    _startButton = true;
+                    ChangePlayButton(Color.ForestGreen, "Play");
+                });
                 _codeOnFlyTimer.Stop();
             }
         }
