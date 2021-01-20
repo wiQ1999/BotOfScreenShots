@@ -1,0 +1,1 @@
+# BotOfScreenShots short documenatation
